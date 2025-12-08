@@ -22,6 +22,7 @@ app.use('/api', apiRouter)
 
 
 async function main() {
+    console.log('hello')
     try {
         await mongoose.connect(process.env.MONGO_URL || "")
 
