@@ -130,6 +130,8 @@ apiRouter.post("/v1/content/share", authMiddleware, async (req, res) => {
                     console.log(e)
                     return res.status(500).send({ message: "Unable to update db" })
                 }
+            } else {
+                const checkUpdate = await Links.findOneAndUpdate({ userId: req.userId }, { share })
             }
 
 
