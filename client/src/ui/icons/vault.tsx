@@ -1,6 +1,6 @@
 import type { IconProps } from "./props";
 
-export default function Vault({ className }: IconProps) {
+export  function Vault({ className }: IconProps) {
     return <svg
         xmlns="http://www.w3.org/2000/svg"
         viewBox="0 0 640 640"

@@ -2,7 +2,7 @@
 import { Sidebar, type ItemListType } from "../components/sidebar";
 import Dashboard from "./Dashboard";
 
-import { Logout, Share, Twitter, User, YouTube } from "../icons";
+import {Logout, Share, Twitter, User, YouTube}  from '../icons/'
 import useContent from "../../context";
 
 

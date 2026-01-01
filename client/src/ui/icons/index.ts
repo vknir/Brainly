@@ -1,9 +1,12 @@
-import Eye from "./eye";
-import EyeSlash from "./eyeslash";
-import Share from "./share";
-import Twitter from "./twitter";
-import YouTube from "./youtube";
-import User from "./user";
-import Logout from "./logout";
-
-export { Eye, EyeSlash, Twitter, YouTube, Share, User, Logout }
+export * from './eye'
+export * from './eyeslash'
+export * from './close'
+export * from './logout'
+export * from './plus'
+export * from './share'
+export * from './twitter'
+export * from './user'
+export * from './vault'
+export * from './youtube'
+export * from './clipboard'
+export * from './tick'

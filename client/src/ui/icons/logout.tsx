@@ -1,6 +1,6 @@
 import type { IconProps } from "./props";
 
-export default function Logout({ className }: IconProps) {
+export  function Logout({ className }: IconProps) {
     return <>
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor"
             className={className + " rotate-90"}>

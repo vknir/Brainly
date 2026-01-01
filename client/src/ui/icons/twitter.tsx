@@ -1,6 +1,6 @@
 import type { IconProps } from "./props";
 
-export default function Twitter({ className }: IconProps) {
+export  function Twitter({ className }: IconProps) {
     return (
         <svg
             width="300"
