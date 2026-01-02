@@ -3,14 +3,43 @@
 @theme {
 
     --animate-appear: appear .1s linear;
+    --animate-slide: slide 2.1s linear;
+
 
     @keyframes appear {
         0% {
             opacity: 0;
         }
+
         100% {
-         
+
             opacity: 100;
+        }
+    }
+
+    @keyframes slide {
+        0% {
+            opacity: 0;
+            right: 0;
+        }
+
+        25% {
+            opacity: 1;
+            right: 16px;
+        }
+
+        50%{
+            opacity: 1;
+        }
+
+        75% {
+            opacity: 1;
+            right: 16px;
+        }
+
+        100% {
+            opacity: 0;
+            right: 0px
         }
     }
 }
