@@ -13,6 +13,7 @@ const userSchema = new mongoose.Schema({
 const contentSchema = new mongoose.Schema({
     title: { type: String, required: true },
     link: { type: String, required: true },
+    description: { type: String, required: true },
     userId: {
         type: mongoose.Schema.Types.ObjectId, required: true, ref: 'User',
     },

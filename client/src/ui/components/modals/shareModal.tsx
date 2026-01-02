@@ -4,7 +4,7 @@ import { Button } from "../button"
 import useCopyToClipBoard from "../../../hooks/useCopyToClipBoard"
 import QRCode from "react-qr-code"
 
-export default function ShareModal(
+export const ShareModal = (
     {
         sharingEnabled,
         handleSharing,
@@ -15,7 +15,7 @@ export default function ShareModal(
             handleSharing: React.Dispatch<SetStateAction<boolean>>
             hash: string,
 
-        }) {
+        }) => {
 
     const textToCopy = window.location.href + hash
 
@@ -43,7 +43,7 @@ export default function ShareModal(
                                 <Button onClick={() => copy(textToCopy)} variant="none" className="p-0 hover:cursor-pointer" startIcon={isCopied ? <Tick className="size-4 animate-appear" /> : <Clipboard className="size-4 animate-appear" />} />
                             </div>
 
-                        </div>  
+                        </div>
                         <p className="font-medium">Here's a QR code for the same:</p>
                         <div className="w-full flex justify-center">
                             <QRCode className="size-30" value={textToCopy} />
