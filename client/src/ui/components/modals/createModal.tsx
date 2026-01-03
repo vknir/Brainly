@@ -14,15 +14,11 @@ export const CreateModal = (
     type Mode = "auto" | "manual"
     const [mode, setMode] = useState<Mode>("auto")
 
-    type AutomaticFormFields = {
-        link: string,
-        tags: string[]
-    }
 
-    type ManualFormFields = {
-        title: string,
+    type FormFields = {
+        title?: string,
         link: string,
-        description: string,
+        description?: string,
         type: "Youtube" | "Twitter",
         tags?: string[]
     }
@@ -33,10 +29,10 @@ export const CreateModal = (
         register,
         handleSubmit,
         formState: { errors }
-    } = useForm<ManualFormFields>()
+    } = useForm<FormFields>()
 
 
-    const onSubmit: SubmitHandler<ManualFormFields> = (data) => console.log(data)
+    const onSubmit: SubmitHandler<FormFields> = (data) => console.log(data)
 
     const inputStyle = "bg-white p-2 outline-0 rounded-md"
 
@@ -60,11 +56,19 @@ export const CreateModal = (
                             the content using AI (only available for Youtube and X).</p>
 
                     </div>
-                    <form className="flex flex-col px-8 gap-4  text-sm">
+                    <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col px-8 gap-4  text-sm">
                         <label className="leading-none" htmlFor="Link">Link</label>
                         <input className={inputStyle} type="text" id="Link"
                             placeholder="eg. https://www.youtube.com/watch?v=kQRuFQ9Qqps"
                             {...register("link", { required: true })}></input>
+
+                        <label htmlFor="Type">Type of content</label>
+                        <select className={inputStyle} name="Type" id="Type"
+                            {...register("type")}
+                        >
+                            <option value="Youtube">Youtube</option>
+                            <option value="Twitter">X</option>
+                        </select>
 
                         <label className="leading-none" htmlFor="Tags">Tags</label>
                         <input className={inputStyle} type="text" placeholder="eg. #fun" {...register("tags")} />
