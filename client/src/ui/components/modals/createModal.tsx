@@ -57,13 +57,13 @@ export const CreateModal = (
 
                     </div>
                     <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col px-8 gap-4  text-sm">
-                        <label className="leading-none" htmlFor="Link">Link</label>
+                        <label className="leading-none" htmlFor="Link">Link *</label>
                         <input className={inputStyle} type="text" id="Link"
                             placeholder="eg. https://www.youtube.com/watch?v=kQRuFQ9Qqps"
                             {...register("link", { required: true })}></input>
 
-                        <label htmlFor="Type">Type of content</label>
-                        <select className={inputStyle} name="Type" id="Type"
+                        <label htmlFor="Type">Type of content *</label>
+                        <select className={inputStyle}  id="Type"
                             {...register("type")}
                         >
                             <option value="Youtube">Youtube</option>
@@ -79,19 +79,19 @@ export const CreateModal = (
                 :
                 <>
                     <form className="flex flex-col px-8 gap-4 text-sm" onSubmit={handleSubmit(onSubmit)}>
-                        <label className="leading-none" htmlFor="Title">Title</label>
+                        <label className="leading-none" htmlFor="Title">Title *</label>
                         <input placeholder="eg. A Video about Cats" className={inputStyle} type="text" id="Title"
                             {...register("title", { required: true })} ></input>
 
-                        <label className="leading-none" htmlFor="Description">Description</label>
+                        <label className="leading-none" htmlFor="Description">Description *</label>
                         <textarea placeholder="eg. Cats are awesome" className={inputStyle + " resize-none"} id="Description"
                             {...register("description", { required: true })} ></textarea>
 
-                        <label className="leading-none" htmlFor="Link">Link</label>
+                        <label className="leading-none" htmlFor="Link">Link *</label>
                         <input className={inputStyle} type="text" id="Link" placeholder="eg. https://www.youtube.com/watch?v=kQRuFQ9Qqps"
                             {...register("link", { required: true })}></input>
 
-                        <label className="leading-none" htmlFor="Type">Type of content</label>
+                        <label className="leading-none" htmlFor="Type">Type of content *</label>
                         <select className={inputStyle} id="Type" {...register("type")}  >
                             <option value="Youtube">Youtube</option>
                             <option value="Twitter">Twitter</option>

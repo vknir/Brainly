@@ -1,18 +1,18 @@
 import { createContext, useContext, useState, type ReactNode } from "react"
 
-export type ContentType = "All" | "Twitter" | "Youtube"
+export type Content = "All" | "Twitter" | "Youtube"
 
-type ContentContextType = {
-    displayContent: ContentType
-    setDisplayContent: React.Dispatch<React.SetStateAction<ContentType>>
+type ContentContext = {
+    displayContent: Content
+    setDisplayContent: React.Dispatch<React.SetStateAction<Content>>
 }
 
 
-const ContentContext = createContext<ContentContextType | undefined>(undefined)
+const ContentContext = createContext<ContentContext | undefined>(undefined)
 
 export function ContentContextProvider({ children }: { children: ReactNode }) {
 
-    const [displayContent, setDisplayContent] = useState<ContentType>("All")
+    const [displayContent, setDisplayContent] = useState<Content>("All")
 
     return <>
         <ContentContext value={{ displayContent, setDisplayContent }} >

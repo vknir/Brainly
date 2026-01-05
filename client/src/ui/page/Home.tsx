@@ -20,7 +20,7 @@ export default function Home() {
 
 
 
-    return <div className="flex">
+    return <div className="w-full h-full flex overflow-clip">
         <Sidebar brandName="MediaShare" logo={<Share className="size-8" />} itemList={itemList} />
         <Dashboard />
     </div>
