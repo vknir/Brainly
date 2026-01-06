@@ -5,6 +5,7 @@ interface ButtonProps
     extends React.ButtonHTMLAttributes<HTMLButtonElement> {
     text?: string,
     startIcon?: ReactNode,
+    endIcon?: ReactNode,
     variant: "primary" | "selected" | "unselected" | "none",
     className?: string
 }
@@ -18,14 +19,14 @@ const variantStyle = {
     none: ""
 }
 
-const Button = ({ text, startIcon, variant, className, onClick, ...props }: ButtonProps) => {
+const Button = ({ text, startIcon, endIcon, variant, className, onClick, ...props }: ButtonProps) => {
     return <button
         type={onClick ? "button" : "submit"}
         onClick={onClick}
         className={className ? className : `${defaultStyle} ${variantStyle[variant]}`}
         {...props}
     >
-        {startIcon} {text}
+        {startIcon} {text} {endIcon}
 
     </button>
 }

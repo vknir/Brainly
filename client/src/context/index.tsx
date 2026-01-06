@@ -1,30 +1,51 @@
-import { createContext, useContext, useState, type ReactNode } from "react"
+import { createContext, useContext, useReducer, type ReactNode } from "react"
 
-export type Content = "All" | "Twitter" | "Youtube"
+export type Content = "Youtube" | "Twitter" | "All"
 
-type ContentContext = {
+type Action = { type: "Select Youtube" } | { type: "Select Twitter" } | { type: "Select All" } | { type: "Select None" }
+
+type State = {
+    displayButton: boolean,
     displayContent: Content
-    setDisplayContent: React.Dispatch<React.SetStateAction<Content>>
+}
+
+type StateProp = {
+    state: State,
+    dispatch: React.ActionDispatch<[action: Action]>
+}
+
+const StateContex = createContext<StateProp | undefined>(undefined)
+
+const reducer = (state: State, action: Action): State => {
+    switch (action.type) {
+        case "Select All":
+            return { displayButton: true, displayContent: "All" }
+        case "Select Twitter":
+            return { displayButton: true, displayContent: "Twitter" }
+        case "Select Youtube":
+            return { displayButton: true, displayContent: "Youtube" }
+        case "Select None":
+            return { displayButton: false, displayContent: "All" }
+        default:
+            return state
+    }
 }
 
 
-const ContentContext = createContext<ContentContext | undefined>(undefined)
+export function ContentContexProvider({ children }: { children: ReactNode }) {
 
-export function ContentContextProvider({ children }: { children: ReactNode }) {
 
-    const [displayContent, setDisplayContent] = useState<Content>("All")
+    const [state, dispatch] = useReducer(reducer, { displayButton: false, displayContent: "All" })
 
-    return <>
-        <ContentContext value={{ displayContent, setDisplayContent }} >
-            {children}
-        </ContentContext>
-
-    </>
+    return <StateContex value={{ state, dispatch }}>
+        {children}
+    </StateContex>
 }
 
 export default function useContent() {
-    const context = useContext(ContentContext)
-    if (!context)
-        throw new Error("Context not defined")
-    return context
+    const contentContext = useContext(StateContex)
+    if (contentContext === undefined)
+        throw new Error("No context")
+    return contentContext
+
 }
