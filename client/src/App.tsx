@@ -1,13 +1,13 @@
 
-
 import { ContentContexProvider } from './context'
-import Home from './ui/page/Home'
+import Landing from './ui/page/Landing'
+
 
 export default function App() {
 
     return <>
         <ContentContexProvider  >
-            <Home />
+            <Landing />
         </ContentContexProvider>
     </>
 }

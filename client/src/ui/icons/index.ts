@@ -12,3 +12,8 @@ export * from './clipboard'
 export * from './tick'
 export * from './trash'
 export * from './popout'
+
+export * from './blob1'
+export * from './blob2'
+export * from './blob3'
+export * from './blob4'
