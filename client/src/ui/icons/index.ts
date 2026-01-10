@@ -17,3 +17,8 @@ export * from './blob1'
 export * from './blob2'
 export * from './blob3'
 export * from './blob4'
+
+export * from './facebook'
+export * from './folder'
+
+export * from './linkedin'
