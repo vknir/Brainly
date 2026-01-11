@@ -1,11 +1,12 @@
 import { useState } from "react"
-import Eye from "../icons/eye"
-import EyeSlash from "../icons/eyeslash"
+
 import { type UseFormRegister } from "react-hook-form"
+import { Eye, EyeSlash } from "../icons"
 
 interface IFormValues {
     "Username": string,
     "Password": string,
+    "Confirm Password": string
 }
 
 
@@ -13,37 +14,47 @@ interface InputProps
     extends React.InputHTMLAttributes<HTMLInputElement> {
     type: string,
     error?: string,
-    inputName: "Username" | "Password",
+    inputName: "Username" | "Password" | "Confirm Password",
     register: UseFormRegister<IFormValues>,
+    watch?: string,
     required: boolean
 }
 
-const Input = ({ className, inputName, type, register, required, ...props }: InputProps) => {
+const Input = ({ className, inputName, type, register, watch, required, ...props }: InputProps) => {
     const [showPassword, setShowPassword] = useState<Boolean>(false)
 
     const handleClick = () => {
         setShowPassword(prev => !prev)
     }
 
-    const defaultStyle = "w-full border-md bg-white p-1 flex justify-between items-center rounded-md hover:cursor-pointer"
+    const defaultStyle = "w-full  bg-white p-1 flex justify-between items-center rounded-md border-transparent "
 
     return type === "password" ?
         <div className={`${defaultStyle} ${className}`}>
             <input
                 className="outline-0"
-                placeholder="Password"
+                placeholder={inputName}
                 type={showPassword ? "text" : "password"}
-                {...register(inputName, { required })}
+                {...register(inputName, {
+                    required: required,
+                    validate: (val: string) => {
+                        if (watch != undefined && watch != val)
+                            return "Passwords do not match"
+                    }
+                })}
                 {...props}
             />
-            <button className="hover:cursor-pointer" onClick={handleClick}>{showPassword ? <Eye className="size-4" /> : <EyeSlash className="size-4" />}</button>
+            <button className="hover:cursor-pointer " onClick={handleClick}>{showPassword ? <Eye className="size-4" /> : <EyeSlash className="size-4" />}</button>
         </div> :
         <div className={`${defaultStyle} ${className}`}>
             <input
                 className="outline-0"
                 placeholder={inputName}
                 type={type}
-                {...register(inputName, { required })}
+                {...register(inputName, { required:required, validate : (val:string)=>{
+                    if( !(/^.{3,11}$/.test(val)) )
+                        return "Username should be between 3-11 characters"
+                } })}
                 {...props}
             >
 
