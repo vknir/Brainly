@@ -2,28 +2,35 @@ import { useState } from "react";
 import { Button } from "../components/button";
 import { Input } from "../components/input";
 import { useForm, type SubmitHandler } from "react-hook-form";
+import axios from "axios";
 
 
 export default function Auth() {
 
     interface IFormValues {
-        "Username": string,
-        "Password": string,
+        "username": string,
+        "password": string,
         "Confirm Password": string
     }
 
 
     const [variant, setVariant] = useState<boolean>(true)
-
-    const { register, handleSubmit, watch, formState: { errors } } = useForm<IFormValues>()
     // variant --> true --> LogIn
     // variant --> false --> SignUp
 
+
+    const { register, handleSubmit, watch, formState: { errors } } = useForm<IFormValues>()
+
+
     const onSubmit: SubmitHandler<IFormValues> = async (data) => {
-        console.log(data)
+        const { username, password } = data
+        const response = await axios.post('http://localhost:3000/api/v1/login', {
+            username, password
+        })
+        console.log(response)
     }
 
-    const watchResult = watch("Password")
+    const watchResult = watch("password")
 
     return <>
         <div className="h-full w-full bg-slate-200 flex flex-col justify-center items-center p-10">
@@ -34,16 +41,16 @@ export default function Auth() {
                 </div>
 
                 <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-6" >
-                    <Input className="py-2 px-4" type="text" inputName="Username" required={true} register={register} />
+                    <Input className="py-2 px-4" type="text" inputName="username" required={true} register={register} />
 
 
-                    <Input className="py-2 px-4" type="password" inputName="Password" required={true} register={register} />
+                    <Input className="py-2 px-4" type="password" inputName="password" required={true} register={register} />
 
                     {variant ? <></> : <Input watch={watchResult} className={`py-2 px-4  ${errors["Confirm Password"] ? " border-red-500  " : ""} `} type="password" inputName="Confirm Password" required={true} register={register} />}
                     <Button variant="primary" text="Submit" />
                 </form>
                 <div >
-                    <p className={`${errors.Username ?
+                    <p className={`${errors.username ?
                         "opacity-100 animate-appear text-red-500 " :
                         "opacity-0 "}`} >
                         Username should be between 3-11 characters.

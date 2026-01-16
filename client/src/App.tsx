@@ -1,14 +1,16 @@
 
-import { ContentContexProvider } from './context'
+import { AuthContextProvider, ContentContexProvider } from './context'
 import Landing from './ui/page/Landing'
 
 
 export default function App() {
 
     return <>
-        <ContentContexProvider  >
-            <Landing />
-        </ContentContexProvider>
+        <AuthContextProvider>
+            <ContentContexProvider  >
+                <Landing />
+            </ContentContexProvider>
+        </AuthContextProvider>
     </>
 }
 

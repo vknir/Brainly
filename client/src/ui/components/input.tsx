@@ -4,8 +4,8 @@ import { type UseFormRegister } from "react-hook-form"
 import { Eye, EyeSlash } from "../icons"
 
 interface IFormValues {
-    "Username": string,
-    "Password": string,
+    "username": string,
+    "password": string,
     "Confirm Password": string
 }
 
@@ -14,7 +14,7 @@ interface InputProps
     extends React.InputHTMLAttributes<HTMLInputElement> {
     type: string,
     error?: string,
-    inputName: "Username" | "Password" | "Confirm Password",
+    inputName: "username" | "password" | "Confirm Password",
     register: UseFormRegister<IFormValues>,
     watch?: string,
     required: boolean
@@ -32,7 +32,7 @@ const Input = ({ className, inputName, type, register, watch, required, ...props
     return type === "password" ?
         <div className={`${defaultStyle} ${className}`}>
             <input
-                className="outline-0"
+                className="outline-0 bg-white"
                 placeholder={inputName}
                 type={showPassword ? "text" : "password"}
                 {...register(inputName, {
@@ -48,7 +48,7 @@ const Input = ({ className, inputName, type, register, watch, required, ...props
         </div> :
         <div className={`${defaultStyle} ${className}`}>
             <input
-                className="outline-0"
+                className="outline-0 bg-white"
                 placeholder={inputName}
                 type={type}
                 {...register(inputName, { required:required, validate : (val:string)=>{

@@ -11,6 +11,7 @@ import * as crypto from 'crypto'
 const apiRouter: Router = Router();
 
 apiRouter.post('/v1/signup', inputMiddleware, async (req, res) => {
+    
     const { username, password } = req.body;
     try {
 
@@ -36,6 +37,7 @@ apiRouter.post('/v1/signup', inputMiddleware, async (req, res) => {
 
 
 apiRouter.post('/v1/login', inputMiddleware, async (req, res) => {
+    
     const { username, password } = req.body
 
     try {
