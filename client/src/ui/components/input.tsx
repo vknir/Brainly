@@ -20,6 +20,8 @@ interface InputProps
     required: boolean
 }
 
+const passwordValidationRegex = /^(?=.*[a-z])(?=.*[0-9])(?=.*[A-Z])(?=.*[!@#$%^&*()?{}~]).{8,18}$/
+
 const Input = ({ className, inputName, type, register, watch, required, ...props }: InputProps) => {
     const [showPassword, setShowPassword] = useState<Boolean>(false)
 
@@ -38,9 +40,11 @@ const Input = ({ className, inputName, type, register, watch, required, ...props
                 {...register(inputName, {
                     required: required,
                     validate: (val: string) => {
+                        if( inputName === "password" && !passwordValidationRegex.test(val) )
+                            return "Password must contain atleast one capital, one small, a digit, a special character and must be between 3-18 characters"
                         if (watch != undefined && watch != val)
                             return "Passwords do not match"
-                    }
+                    }   
                 })}
                 {...props}
             />
@@ -52,8 +56,8 @@ const Input = ({ className, inputName, type, register, watch, required, ...props
                 placeholder={inputName}
                 type={type}
                 {...register(inputName, { required:required, validate : (val:string)=>{
-                    if( !(/^.{3,11}$/.test(val)) )
-                        return "Username should be between 3-11 characters"
+                    if( !(/^.{3,20}$/.test(val)) )
+                        return "Username should be between 3-20 characters"
                 } })}
                 {...props}
             >

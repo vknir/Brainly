@@ -19,6 +19,11 @@ apiRouter.post('/v1/signup', inputMiddleware, async (req, res) => {
 
         if (!hashedPassword)
             throw "Unable to hash password"
+        const findUser = await User.findOne({username})
+
+        if(findUser){
+            return res.status(409).send({message:"Username taken"})
+        }
 
         const userCreated = await User.create({ username, password: hashedPassword })
         if (!userCreated)

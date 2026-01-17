@@ -1,48 +1,28 @@
-import { createContext, useContext, useEffect, useState, type ReactNode } from "react"
+import { createContext, useContext, useState, type ReactNode, type SetStateAction } from "react"
 
-
-
-type AuthToken = {
-    token: string,
-    user: {
-        username: string,
-        _id: string
-    }
+type User = {
+    username: string,
+    _id: string
 } | null
 
-const Auth = createContext<AuthToken | undefined>(undefined)
+type Auth = {
+    user: User,
+    setUser: React.Dispatch<SetStateAction<User>>
+}
+
+const AuthContext = createContext<Auth | undefined>(undefined)
 
 export const AuthContextProvider = ({ children }: { children: ReactNode }) => {
+    const [user, setUser] = useState<User>(null)
 
-    const [auth, setAuth] = useState<AuthToken>(null)
-
-    useEffect(() => {
-        const authCheck = localStorage.getItem("auth")
-        if (authCheck) {
-            const newAuth: AuthToken = JSON.parse(authCheck) as AuthToken
-            setAuth(newAuth)
-        }
-    }, [])
-
-    if (auth) {
-        let { token, user } = auth
-        return <Auth value={{ token, user }}>
-            {children}
-        </Auth>
-    } else {
-        return <Auth value={null}>
-            {children}
-        </Auth>
-    }
-
-
+    return <AuthContext value={{ user, setUser }}>
+        {children}
+    </AuthContext>
 }
 
 export const useAuth = () => {
-
-    const authContext = useContext(Auth)
+    const authContext = useContext(AuthContext)
     if (authContext === undefined)
-        throw new Error("Context not defined")
-
+        throw new Error("No context provided")
     return authContext
 }

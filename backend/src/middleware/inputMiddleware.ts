@@ -9,7 +9,7 @@ const CredentialValidator = z.object({
         .regex(/^(?=.*[!@#$%^&*()?{}~]).+$/, "Must include atleast one special character"),
     username: z.string()
         .min(3)
-        .max(11)
+        .max(20)
 })
 
 export default function inputMiddleware(req: Request, res: Response, next: NextFunction) {
