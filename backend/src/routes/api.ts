@@ -2,7 +2,7 @@ import { Router } from "express";
 import inputMiddleware from "../middleware/inputMiddleware.js";
 import { Content, Links, User } from "../db.js";
 import { JWT_SECRET } from "../config.js";
-import jwt from "jsonwebtoken"
+import jwt, { type JwtPayload } from "jsonwebtoken"
 import bcrypt from "bcrypt"
 import { authMiddleware } from "../middleware/authMiddleware.js";
 import * as crypto from 'crypto'
@@ -11,7 +11,7 @@ import * as crypto from 'crypto'
 const apiRouter: Router = Router();
 
 apiRouter.post('/v1/signup', inputMiddleware, async (req, res) => {
-    
+
     const { username, password } = req.body;
     try {
 
@@ -19,10 +19,10 @@ apiRouter.post('/v1/signup', inputMiddleware, async (req, res) => {
 
         if (!hashedPassword)
             throw "Unable to hash password"
-        const findUser = await User.findOne({username})
+        const findUser = await User.findOne({ username })
 
-        if(findUser){
-            return res.status(409).send({message:"Username taken"})
+        if (findUser) {
+            return res.status(409).send({ message: "Username taken" })
         }
 
         const userCreated = await User.create({ username, password: hashedPassword })
@@ -42,7 +42,7 @@ apiRouter.post('/v1/signup', inputMiddleware, async (req, res) => {
 
 
 apiRouter.post('/v1/login', inputMiddleware, async (req, res) => {
-    
+
     const { username, password } = req.body
 
     try {
@@ -62,7 +62,7 @@ apiRouter.post('/v1/login', inputMiddleware, async (req, res) => {
             )
         }
         if (!JWT_SECRET)
-            throw "Unable to get JWT_SECRET"
+            return res.status(500).send({ message: "Unable to login, try again later" })
 
         const token = jwt.sign({ _id: currentUser._id }, JWT_SECRET)
         return res.status(200).send({ message: "Login successful", token, user: { username, _id: currentUser._id } })
@@ -166,6 +166,28 @@ apiRouter.get("/v1/content/:shareLink", authMiddleware, async (req, res) => {
     if (!content)
         return res.status(500).send({ message: "Unable to get content" })
     return res.status(200).send({ message: "Content retrieval successful", content })
+})
+
+
+apiRouter.get("/v1/exist", async (req, res) => {
+    const token = req.headers.authorization
+    if (token && JWT_SECRET) {
+        try {
+            const decodedData = jwt.verify(token, JWT_SECRET) as JwtPayload
+            if (decodedData._id) {
+                const findUser = await User.findById(decodedData._id)
+                if (findUser) {
+                    return res.status(200).send({ message: "User exists" })
+                } else {
+                    return res.status(400).send({ message: "User does not exist" })
+                }
+
+            }
+        } catch (e) {
+            console.log(e)
+            return res.status(400).send({ message: "Token expired/ Wrong token" })
+        }
+    }
 })
 
 

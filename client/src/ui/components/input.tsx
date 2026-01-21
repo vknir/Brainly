@@ -48,7 +48,7 @@ const Input = ({ className, inputName, type, register, watch, required, ...props
                 })}
                 {...props}
             />
-            <button className="hover:cursor-pointer " onClick={handleClick}>{showPassword ? <Eye className="size-4" /> : <EyeSlash className="size-4" />}</button>
+            <button type="button" className="hover:cursor-pointer " onClick={handleClick}>{showPassword ? <Eye className="size-4" /> : <EyeSlash className="size-4" />}</button>
         </div> :
         <div className={`${defaultStyle} ${className}`}>
             <input

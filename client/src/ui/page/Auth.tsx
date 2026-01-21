@@ -2,16 +2,26 @@ import { useState } from "react";
 import { Button } from "../components/button";
 import { Input } from "../components/input";
 import { useForm, type SubmitHandler } from "react-hook-form";
-import axios, { AxiosError, isAxiosError } from "axios";
+import axios, { isAxiosError } from "axios";
 import { apiRoute } from "../../utils/api";
 import { Notification } from "../components/notification";
 import { useAuth } from "../../context";
+import { useNavigate } from "react-router";
 
 
 interface IFormValues {
     "username": string,
     "password": string,
     "Confirm Password": string
+}
+
+type Data = {
+    message: string,
+    token: string,
+    user: {
+        _id: string,
+        username: string
+    }
 }
 
 
@@ -25,6 +35,7 @@ export default function Auth() {
 
 
 
+    
 
     const [isLogin, setIsLogin] = useState<boolean>(true)
     // isLogin --> true --> LogIn
@@ -35,61 +46,31 @@ export default function Auth() {
     const { setUser } = useAuth()
     const [visible, setVisible] = useState<boolean>(false)
     const [notificationText, setNotificationText] = useState<string>("")
+    const navigate = useNavigate()
 
     const onSubmit: SubmitHandler<IFormValues> = async (data) => {
 
         const { username, password } = data
 
-        if (isLogin) {
-            try {
-                const response = await axios.post(apiRoute.login, { username, password }, config)
-
-                const { token, user, message } = response.data
-                localStorage.setItem("token", token)
-                setUser(user)
-                setNotificationText(message)
-                setVisible(true)
-            } catch (error) {
-                if (isAxiosError(error)) {
-
-                    switch (error.response?.status) {
-                        case 403:
-                            setNotificationText("Invalid Credentials ❌");
-                            break;
-                        case 500:
-                            setNotificationText("Unable to login, try again later")
-                            break;
-                    }
-
-                    setVisible(true)
-                }
-            }
-        } else {
-
-            try {
-                const response = await axios.post(apiRoute.signup, { username, password }, config)
-                console.log(response.data.message)
-                const { token, user, message } = response.data
-                localStorage.setItem("token", token)
-                setUser(user)
-                setNotificationText(message)
-            } catch (error) {
-                if (isAxiosError(error)) {
-                    switch (error.status) {
-                        case 500:
-                            setNotificationText("Unable to create your account, try again later")
-                            break;
-                        case 409:
-                            setNotificationText("Username already in use")
-                            break;
-                    }
-
-                }
-            }
+        try {
+            const response = await axios.post(isLogin ? apiRoute.login : apiRoute.signup, { username, password }, config)
+            const data = response.data as Data
+            setNotificationText(data.message)
+            localStorage.setItem("token", data.token)
             setVisible(true)
+            setUser(data.user)
+            navigate("/home")
+
+        } catch (e) {
+            if (isAxiosError(e) && e.response) {
+                setNotificationText(e.response.data.message);
+                setVisible(true)
+            }
         }
 
     }
+
+
 
     const watchResult = watch("password")
 
@@ -122,16 +103,16 @@ export default function Auth() {
                 </form>
                 <div >
                     <p className={`${errors.username ?
-                        "opacity-100 animate-appear text-red-500 " :
+                        "opacity-100 animate-appear text-sm text-red-500 " :
                         "hidden "}`} >
                         Username should be between 3-20 characters.
                     </p>
                     {
-                        !isLogin && 
-                        <p className={`${errors.password ?
-                            "opacity-100 animate-appear text-red-500 " :
-                            "hidden"}`}>
-                            Password must contain atleast one:
+                        !isLogin &&
+                        <div className={errors.password ? "text-red-500 animate-appear text-sm " : "hidden"}>
+                            <p >
+                                Password must contain atleast one:
+                            </p>
                             <ul className="list-disc pl-4">
                                 <li>Capital letter</li>
                                 <li>Small letter</li>
@@ -139,13 +120,13 @@ export default function Auth() {
                                 <li>Special character</li>
                                 <li>Less than 18 characters</li>
                             </ul>
-                        </p>
+                        </div>
                     }
 
                     {
                         !isLogin &&
                         <p className={`${errors["Confirm Password"] ?
-                            "opacity-100 animate-appear text-red-500 " :
+                            "opacity-100 animate-appear text-sm text-red-500 " :
                             "hidden"}`}>
                             Your passwords do not match.
                         </p>

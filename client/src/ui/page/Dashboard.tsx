@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Button } from "../components/button";
-import useContent from "../../context";
+import { useContent } from "../../context"
 import { ShareModal } from "../components/modals/shareModal";
 import { Close, Plus, Share } from "../icons";
 import { CreateModal } from "../components/modals/createModal";
@@ -43,15 +43,15 @@ export default function Dashboard() {
         <div className="w-full px-6 pt-4">
             {
                 state.displayButton ?
-                <Button variant="none"
-                    onClick={()=>dispatch({type:"Select None"})}
-                    className="bg-gray-100 flex items-center p-2 rounded-md w-min gap-4"
-                    text={state.displayContent}
-                    endIcon={
-                        <Close className="size-3 hover:cursor-pointer" />
-                    }
-                />:
-                <div className="w-full h-10"></div>
+                    <Button variant="none"
+                        onClick={() => dispatch({ type: "Select None" })}
+                        className="bg-gray-100 flex items-center p-2 rounded-md w-min gap-4"
+                        text={state.displayContent}
+                        endIcon={
+                            <Close className="size-3 hover:cursor-pointer" />
+                        }
+                    /> :
+                    <div className="w-full h-10"></div>
             }
         </div>
         <div className="overflow-clip h-dvh px-6 py-4 " >
