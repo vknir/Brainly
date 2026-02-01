@@ -2,6 +2,8 @@ import { useState } from "react"
 import { Close } from "../../icons"
 import { Button } from "../button"
 import { useForm, type SubmitHandler } from "react-hook-form"
+import axios from "axios"
+import { apiRoute } from "../../../utils/api"
 
 export const CreateModal = (
     {
@@ -32,7 +34,21 @@ export const CreateModal = (
     } = useForm<FormFields>()
 
 
-    const onSubmit: SubmitHandler<FormFields> = (data) => console.log(data)
+    const onSubmit: SubmitHandler<FormFields> = async (data) => {
+        if (mode === "auto") {
+
+        } else {
+            const token = localStorage.getItem("token")
+            const payload = {
+                link: data.link,
+                title: data.title,
+                description: data.description,
+                type: data.type
+            }
+            const response = await axios.post(apiRoute.content, payload, { headers: { Authorization: token } })
+            console.log(response)
+        }
+    }
 
     const inputStyle = "bg-white p-2 outline-0 rounded-md"
 
@@ -46,8 +62,8 @@ export const CreateModal = (
 
             </div>
             <div className="flex px-8 gap-4">
-                <Button onClick={() => setMode("auto")} variant={`${mode === "auto" ? "selected" : "unselected"}`} text="Automatic" />
-                <Button onClick={() => setMode("manual")} variant={`${mode === "manual" ? "selected" : "unselected"}`} text="Manual" />
+                <Button  onClick={() => setMode("auto")} variant={`${mode === "auto" ? "selected" : "unselected"}`} text="Automatic" />
+                <Button  onClick={() => setMode("manual")} variant={`${mode === "manual" ? "selected" : "unselected"}`} text="Manual" />
             </div>
             {mode === "auto" ?
                 <>
@@ -63,7 +79,7 @@ export const CreateModal = (
                             {...register("link", { required: true })}></input>
 
                         <label htmlFor="Type">Type of content *</label>
-                        <select className={inputStyle}  id="Type"
+                        <select className={inputStyle} id="Type"
                             {...register("type")}
                         >
                             <option value="Youtube">Youtube</option>
@@ -100,7 +116,7 @@ export const CreateModal = (
                         <label className="leading-none" htmlFor="Tags">Tags</label>
                         <input className={inputStyle} type="text" placeholder="eg. #fun" {...register("tags")} />
 
-                        <Button type="submit" variant="selected" text="Submit" />
+                        <Button  type="submit" variant="selected" text="Submit" />
                     </form>
                 </>}
         </div>

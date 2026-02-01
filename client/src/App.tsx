@@ -1,6 +1,6 @@
 
 import { Route, Routes, useNavigate } from 'react-router'
-import { AuthContextProvider, ContentContexProvider } from './context'
+import { UserContextProvider, ContentContexProvider } from './context'
 import Landing from './ui/page/Landing'
 import Home from './ui/page/Home'
 import { useEffect } from 'react'
@@ -13,20 +13,20 @@ export default function App() {
 
     useEffect(() => {
         const token = localStorage.getItem("token")
-        if (!token)
+        if (token)
             navigate("/home")
     }, [navigate])
 
     return <>
 
-        <AuthContextProvider>
+        <UserContextProvider>
             <ContentContexProvider>
                 <Routes>
                     <Route index element={<Landing />} />
                     <Route path="home" element={<Protected> <Home /></Protected>} />
                 </Routes>
             </ContentContexProvider>
-        </AuthContextProvider>
+        </UserContextProvider>
 
     </>
 }

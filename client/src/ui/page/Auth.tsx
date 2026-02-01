@@ -5,7 +5,7 @@ import { useForm, type SubmitHandler } from "react-hook-form";
 import axios, { isAxiosError } from "axios";
 import { apiRoute } from "../../utils/api";
 import { Notification } from "../components/notification";
-import { useAuth } from "../../context";
+import { useUser } from "../../context";
 import { useNavigate } from "react-router";
 
 
@@ -35,15 +35,15 @@ export default function Auth() {
 
 
 
-    
+
 
     const [isLogin, setIsLogin] = useState<boolean>(true)
     // isLogin --> true --> LogIn
     // isLogin --> false --> SignUp
 
 
-    const { register, handleSubmit, watch, formState: { errors } } = useForm<IFormValues>()
-    const { setUser } = useAuth()
+    const { register, handleSubmit, watch, formState: { errors, isSubmitting } } = useForm<IFormValues>()
+    const { setUser } = useUser()
     const [visible, setVisible] = useState<boolean>(false)
     const [notificationText, setNotificationText] = useState<string>("")
     const navigate = useNavigate()
@@ -52,17 +52,25 @@ export default function Auth() {
 
         const { username, password } = data
 
+        const passwordValidationRegex = /^(?=.*[a-z])(?=.*[0-9])(?=.*[A-Z])(?=.*[!@#$%^&*()?{}~]).{8,18}$/
+        console.log(passwordValidationRegex.test(data.password))
+
+
         try {
             const response = await axios.post(isLogin ? apiRoute.login : apiRoute.signup, { username, password }, config)
             const data = response.data as Data
             setNotificationText(data.message)
             localStorage.setItem("token", data.token)
+            localStorage.setItem("user", data.user.username)
+            localStorage.setItem("_id", data.user._id)
             setVisible(true)
             setUser(data.user)
             navigate("/home")
 
         } catch (e) {
+
             if (isAxiosError(e) && e.response) {
+
                 setNotificationText(e.response.data.message);
                 setVisible(true)
             }
@@ -76,10 +84,10 @@ export default function Auth() {
 
     return <>
         <div className="h-full w-full bg-slate-200 flex flex-col justify-center items-center p-10">
-            <div className="w-100 flex flex-col gap-8">
+            <div className="w-100 flex flex-col transform duration-1000 ease-in gap-8">
                 <div className="w-full flex gap-4">
-                    <Button onClick={() => setIsLogin(true)} variant={isLogin ? "selected" : "unselected"} text="Log In" />
-                    <Button onClick={() => setIsLogin(false)} variant={isLogin ? "unselected" : "selected"} text="Sign Up" />
+                    <Button showLoading={false} onClick={() => setIsLogin(true)} variant={isLogin ? "selected" : "unselected"} text="Log In" />
+                    <Button showLoading={false} onClick={() => setIsLogin(false)} variant={isLogin ? "unselected" : "selected"} text="Sign Up" />
                 </div>
 
                 <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-6" >
@@ -99,7 +107,7 @@ export default function Auth() {
                             />
                     }
 
-                    <Button variant="primary" text="Submit" />
+                    <Button showLoading={isSubmitting} variant="primary" text="Submit" />
                 </form>
                 <div >
                     <p className={`${errors.username ?

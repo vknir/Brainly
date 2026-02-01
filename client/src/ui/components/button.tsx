@@ -1,4 +1,5 @@
 import { type ReactNode } from "react"
+import { Loader } from "../icons"
 
 
 interface ButtonProps
@@ -7,7 +8,8 @@ interface ButtonProps
     startIcon?: ReactNode,
     endIcon?: ReactNode,
     variant: "primary" | "selected" | "unselected" | "none",
-    className?: string
+    className?: string,
+    showLoading?: boolean
 }
 
 const defaultStyle = "p-2 w-full rounded-md border border-transparent transition-all duration-150 ease-in group flex justify-center items-center gap-2 hover:cursor-pointer"
@@ -19,14 +21,16 @@ const variantStyle = {
     none: ""
 }
 
-const Button = ({ text, startIcon, endIcon, variant, className, onClick, ...props }: ButtonProps) => {
+const Button = ({ text, startIcon, endIcon, variant, className, onClick, showLoading = false, ...props }: ButtonProps) => {
     return <button
         type={onClick ? "button" : "submit"}
         onClick={onClick}
         className={className ? className : `${defaultStyle} ${variantStyle[variant]}`}
         {...props}
     >
-        {startIcon} {text} {endIcon}
+
+        {showLoading ? <Loader /> : <> {startIcon}  {text} {endIcon}</>}
+
 
     </button>
 }

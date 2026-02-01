@@ -4,5 +4,5 @@ export const apiRoute ={
     login :`${host}login`,
     signup:`${host}signup`,
     content:`${host}content`,
-    exist:`${host}exist`
+   
 }

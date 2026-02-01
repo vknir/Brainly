@@ -22,3 +22,4 @@ export * from './facebook'
 export * from './folder'
 
 export * from './linkedin'
+export * from './loader'

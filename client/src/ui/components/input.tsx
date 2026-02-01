@@ -30,21 +30,21 @@ const Input = ({ className, inputName, type, register, watch, required, ...props
     }
 
     const defaultStyle = "w-full  bg-white p-1 flex justify-between items-center rounded-md border-transparent "
-
+    const placeholder = `${inputName.charAt(0).toUpperCase()}${inputName.slice(1)}`
     return type === "password" ?
         <div className={`${defaultStyle} ${className}`}>
             <input
-                className="outline-0 bg-white"
-                placeholder={inputName}
+                className="outline-0 bg-white autofill:bg-white"
+                placeholder={placeholder}
                 type={showPassword ? "text" : "password"}
                 {...register(inputName, {
                     required: required,
                     validate: (val: string) => {
-                        if( inputName === "password" && !passwordValidationRegex.test(val) )
+                        if (inputName === "password" && !passwordValidationRegex.test(val))
                             return "Password must contain atleast one capital, one small, a digit, a special character and must be between 3-18 characters"
                         if (watch != undefined && watch != val)
                             return "Passwords do not match"
-                    }   
+                    }
                 })}
                 {...props}
             />
@@ -52,13 +52,16 @@ const Input = ({ className, inputName, type, register, watch, required, ...props
         </div> :
         <div className={`${defaultStyle} ${className}`}>
             <input
-                className="outline-0 bg-white"
-                placeholder={inputName}
+                className="outline-0 bg-white autofill:shadow-[inset_0_0_0px_1000px_white] autofill:text-fill-current"
+                autoComplete="false"
+                placeholder={placeholder}
                 type={type}
-                {...register(inputName, { required:required, validate : (val:string)=>{
-                    if( !(/^.{3,20}$/.test(val)) )
-                        return "Username should be between 3-20 characters"
-                } })}
+                {...register(inputName, {
+                    required: required, validate: (val: string) => {
+                        if (!(/^.{3,20}$/.test(val)))
+                            return "Username should be between 3-20 characters"
+                    }
+                })}
                 {...props}
             >
 

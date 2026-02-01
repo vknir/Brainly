@@ -10,6 +10,7 @@ export type ItemListType = {
     username?: string,
     endIcon?: ReactNode,
     handleClick?: () => void,
+    handleButtonClick?: () => void,
     style?: string
 }
 
@@ -64,6 +65,7 @@ const Sidebar = ({ itemList, logo, brandName }: SidebarProps) => {
                     style={item.style}
                     username={item.username}
                     handleClick={item.handleClick}
+                    handleButtonClick={item.handleButtonClick}
                 />)}
         </div>
 

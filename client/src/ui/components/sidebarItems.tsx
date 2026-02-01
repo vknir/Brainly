@@ -7,16 +7,17 @@ interface SidebarItemsProp {
     endIcon?: ReactNode,
     style?: string,
     username?: string,
-    handleClick?: () => void
+    handleClick?: () => void,
+    handleButtonClick?: () => void
 }
 
 const defaultStyle = "flex w-full pl-3 items-center gap-5 hover:cursor-pointer w-min"
 
-export const SidebarItems = ({ startIcon, visible, label, endIcon, style, username, handleClick }: SidebarItemsProp) => {
+export const SidebarItems = ({ startIcon, visible, label, endIcon, style, username, handleClick, handleButtonClick }: SidebarItemsProp) => {
     return <div onClick={handleClick} className={`${defaultStyle} ${style}`}>
         {startIcon}
         {label && visible && <p className="text-sm leading-none animate-appear hover:translate-x-1 transition-all duration-100 ease-in">{label}</p>}
         {username && visible && <p className="text-sm leading-none animate-appear">{username}</p>}
-        {visible && endIcon}
+        {visible && <button onClick={handleButtonClick}>{endIcon}</button>}
     </div>
 }
