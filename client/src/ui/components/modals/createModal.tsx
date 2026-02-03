@@ -4,14 +4,10 @@ import { Button } from "../button"
 import { useForm, type SubmitHandler } from "react-hook-form"
 import axios from "axios"
 import { apiRoute } from "../../../utils/api"
+import { useUser } from "../../../context"
 
 export const CreateModal = (
-    {
-        setIsVisble
-    }:
-        {
-            setIsVisble: React.Dispatch<React.SetStateAction<boolean>>
-        }) => {
+    { setIsVisble }: { setIsVisble: React.Dispatch<React.SetStateAction<boolean>> }) => {
 
     type Mode = "auto" | "manual"
     const [mode, setMode] = useState<Mode>("auto")
@@ -30,8 +26,10 @@ export const CreateModal = (
     const {
         register,
         handleSubmit,
-        formState: { errors }
+        formState: { isSubmitting }
     } = useForm<FormFields>()
+
+    const { setContent } = useUser()
 
 
     const onSubmit: SubmitHandler<FormFields> = async (data) => {
@@ -45,8 +43,13 @@ export const CreateModal = (
                 description: data.description,
                 type: data.type
             }
-            const response = await axios.post(apiRoute.content, payload, { headers: { Authorization: token } })
-            console.log(response)
+            await axios.post(apiRoute.content, payload, { headers: { Authorization: token } }).then((res) => {
+                setContent(prev => [...prev, res.data.content])
+                setIsVisble(false)
+            }).catch(() => {
+                console.log("Error in submitting")
+            })
+
         }
     }
 
@@ -62,8 +65,8 @@ export const CreateModal = (
 
             </div>
             <div className="flex px-8 gap-4">
-                <Button  onClick={() => setMode("auto")} variant={`${mode === "auto" ? "selected" : "unselected"}`} text="Automatic" />
-                <Button  onClick={() => setMode("manual")} variant={`${mode === "manual" ? "selected" : "unselected"}`} text="Manual" />
+                <Button onClick={() => setMode("auto")} variant={`${mode === "auto" ? "selected" : "unselected"}`} text="Automatic" />
+                <Button onClick={() => setMode("manual")} variant={`${mode === "manual" ? "selected" : "unselected"}`} text="Manual" />
             </div>
             {mode === "auto" ?
                 <>
@@ -116,7 +119,7 @@ export const CreateModal = (
                         <label className="leading-none" htmlFor="Tags">Tags</label>
                         <input className={inputStyle} type="text" placeholder="eg. #fun" {...register("tags")} />
 
-                        <Button  type="submit" variant="selected" text="Submit" />
+                        <Button showLoading={isSubmitting} type="submit" variant="selected" text="Submit" />
                     </form>
                 </>}
         </div>

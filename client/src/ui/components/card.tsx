@@ -3,8 +3,12 @@ import PlaceholderImage from '../../../public/placeholder.png'
 import { Trash, Popout, YouTube, Twitter } from '../icons'
 import { Button } from './button';
 import { Tweet } from 'react-tweet';
+import { apiRoute } from '../../utils/api';
+import { useUser } from '../../context';
+import { axiosClient } from '../../api/axiosClient';
 
 type CardProps = {
+    _id: string,
     title: string,
     description: string,
     link: string,
@@ -15,6 +19,7 @@ type CardProps = {
 
 export const Card = (
     {
+        _id,
         title,
         description,
         link,
@@ -50,8 +55,15 @@ export const Card = (
             break;
     }
 
+    const { setContent } = useUser()
+
     const handleClick = (link: string) => {
         window.open(link, '_blank')
+    }
+
+    const deleteContent = async (_id: string) => {
+        await axiosClient.delete(`${apiRoute.content}/${_id}`)
+        setContent(prev => prev.filter(element => element._id !== _id))
     }
 
     return <>
@@ -64,7 +76,8 @@ export const Card = (
                     <p className='leading-none'>{title}</p>
                 </div>
                 <div className='flex '>
-                    <Button variant='none' startIcon={<Trash className='size-4 hover:scale-110 transition-all duration-100 ease-in' />} />
+                    <Button onClick={() => deleteContent(_id)}
+                        variant='none' startIcon={<Trash className='size-4 hover:scale-110 transition-all duration-100 ease-in' />} />
                 </div>
             </div>
             {type === "Youtube" && <img className='rounded-md hover:cursor-pointer' onClick={() => handleClick(link)} src={thumbnailURL ? thumbnailURL : PlaceholderImage}></img>}

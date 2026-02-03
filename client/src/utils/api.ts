@@ -1,4 +1,4 @@
-const host = "http://localhost:3000/api/v1/"
+export const host = "http://localhost:3000/api/v1/"
 
 export const apiRoute ={
     login :`${host}login`,

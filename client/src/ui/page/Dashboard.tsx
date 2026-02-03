@@ -10,7 +10,7 @@ import { Card } from "../components/card";
 export default function Dashboard() {
     const [displayShareModal, setDisplayShareModal] = useState<boolean>(false)
     const [displayCreateModal, setDisplayCreateModal] = useState<boolean>(false)
-    const { user } = useUser()
+    const { user, content } = useUser()
 
     const handleShareClick = () => setDisplayShareModal(true)
 
@@ -56,8 +56,13 @@ export default function Dashboard() {
             }
         </div>
         <div className="overflow-clip h-dvh px-6 py-4 " >
-            <div className="w-full h-dvh py-2 bg-gray-300  grid overflow-auto  [&::-webkit-scrollbar]:w-0 grid-cols-4  ">
-
+            <div className="w-full h-screen py-2 bg-gray-300  grid overflow-auto  [&::-webkit-scrollbar]:w-0 grid-cols-4  ">
+                {content.map((item) => {
+                    return <Card _id={item._id} key={item._id} title={item.title}
+                        description={item.description} link={item.link}
+                        type={item.type} />
+                }).reverse()}
+                <div className="h-screen w-full"></div>
             </div>
 
         </div>

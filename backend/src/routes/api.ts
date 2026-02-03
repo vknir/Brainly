@@ -79,21 +79,21 @@ apiRouter.post('/v1/content', authMiddleware, async (req, res) => {
     if (!currentUser)
         return res.status(400).send({ message: "user not found" })
 
-    const { title, link, tags, type } = req.body
+    const { title, link, tags, type, description } = req.body
 
-    if (!title || !link || !tags || !type)
+    if (!title || !link || !type || !description)
         return res.status(400).send({ message: "Content not valid" })
 
-    const latestContent = await Content.create({ title, link, tags, type, userId: req.userId })
+    const latestContent = await Content.create({ title, link, tags, type, description, userId: req.userId })
     if (!latestContent)
         return res.status(500).send({ message: "Unable to add content" })
 
     res.status(200).send({ message: "Content added succuessfully", content: latestContent })
 })
 
-apiRouter.delete('/v1/content', authMiddleware, async (req, res) => {
-    const { contentId } = req.body
-
+apiRouter.delete('/v1/content/:contentId', authMiddleware, async (req, res) => {
+    const { contentId } = req.params
+    
     const currentContent = await Content.find({ _id: contentId, userId: req.userId })
 
     if (!currentContent || currentContent.length == 0)
@@ -168,27 +168,6 @@ apiRouter.get("/v1/content/:shareLink", authMiddleware, async (req, res) => {
     return res.status(200).send({ message: "Content retrieval successful", content })
 })
 
-
-apiRouter.get("/v1/exist", async (req, res) => {
-    const token = req.headers.authorization
-    if (token && JWT_SECRET) {
-        try {
-            const decodedData = jwt.verify(token, JWT_SECRET) as JwtPayload
-            if (decodedData._id) {
-                const findUser = await User.findById(decodedData._id)
-                if (findUser) {
-                    return res.status(200).send({ message: "User exists" })
-                } else {
-                    return res.status(400).send({ message: "User does not exist" })
-                }
-
-            }
-        } catch (e) {
-            console.log(e)
-            return res.status(400).send({ message: "Token expired/ Wrong token" })
-        }
-    }
-})
 
 
 function generateHash(value: string) {
