@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react';
 import PlaceholderImage from '../../../public/placeholder.png'
-import { Trash, Popout, YouTube, Twitter } from '../icons'
+import { Trash, YouTube } from '../icons'
 import { Button } from './button';
 import { Tweet } from 'react-tweet';
 import { apiRoute } from '../../utils/api';
