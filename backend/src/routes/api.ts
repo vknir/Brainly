@@ -5,7 +5,7 @@ import { JWT_SECRET } from "../config.js";
 import jwt, { type JwtPayload } from "jsonwebtoken"
 import bcrypt from "bcrypt"
 import { authMiddleware } from "../middleware/authMiddleware.js";
-import * as crypto from 'crypto'
+import { generateHash } from "../utils.js";
 
 
 const apiRouter: Router = Router();
@@ -93,7 +93,7 @@ apiRouter.post('/v1/content', authMiddleware, async (req, res) => {
 
 apiRouter.delete('/v1/content/:contentId', authMiddleware, async (req, res) => {
     const { contentId } = req.params
-    
+
     const currentContent = await Content.find({ _id: contentId, userId: req.userId })
 
     if (!currentContent || currentContent.length == 0)
@@ -169,22 +169,6 @@ apiRouter.get("/v1/content/:shareLink", authMiddleware, async (req, res) => {
 })
 
 
-
-function generateHash(value: string) {
-    const salt = crypto.randomBytes(16).toString('hex'); // 16 bytes = 32 hex chars
-
-    // 2. Derive the key using PBKDF2 (Password-Based Key Derivation Function 2)
-    const hashBuffer = crypto.pbkdf2Sync(
-        value,
-        salt,
-        100,
-        16,
-        'sha512'
-    );
-
-    // 3. Store the salt and the hash in the database
-    return hashBuffer.toString('hex')
-}
 
 
 export default apiRouter;

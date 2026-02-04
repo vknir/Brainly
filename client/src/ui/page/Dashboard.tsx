@@ -24,7 +24,7 @@ export default function Dashboard() {
 
 
     return <div className="w-full h-dvh overflow-clip  bg-black flex flex-col relative">
-        {displayShareModal && <ShareModal hash="aakak" setIsVisible={setDisplayShareModal} />}
+        {displayShareModal && <ShareModal setIsVisible={setDisplayShareModal} />}
 
 
         {displayCreateModal && <CreateModal setIsVisble={setDisplayCreateModal} />}
@@ -36,8 +36,15 @@ export default function Dashboard() {
                 <Button showLoading={false} text="Search" variant="unselected"></Button>
             </div>
             <div className="flex gap-4" >
-                <Button showLoading={false} onClick={handleCreateClick} text="Create" variant="selected" startIcon={<Plus className="size-4" />} ></Button >
-                <Button showLoading={false} onClick={handleShareClick} text="Share" variant="unselected" startIcon={<Share className="size-4" />}></Button>
+                <Button
+                    showLoading={false} onClick={handleCreateClick}
+                    text="Create" variant="selected"
+                    startIcon={<Plus className="size-4" />} 
+                />
+                <Button showLoading={false} onClick={handleShareClick}
+                    text="Share" variant="unselected"
+                    startIcon={<Share className="size-4" />}
+                 />
             </div>
         </div>
         <div className="w-full px-6 pt-4">
