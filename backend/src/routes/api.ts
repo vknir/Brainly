@@ -119,6 +119,7 @@ apiRouter.get("/v1/content", authMiddleware, async (req, res) => {
     }
 })
 
+
 apiRouter.post("/v1/content/share", authMiddleware, async (req, res) => {
     const { share } = req.body
     if (share === null || share === undefined)
@@ -137,11 +138,7 @@ apiRouter.post("/v1/content/share", authMiddleware, async (req, res) => {
                     console.log(e)
                     return res.status(500).send({ message: "Unable to update db" })
                 }
-            } else {
-                const checkUpdate = await Links.findOneAndUpdate({ userId: req.userId }, { share })
             }
-
-
             return res.status(200).send({ message: "now you share your contents", link: hash })
         } else {
 

@@ -2,11 +2,15 @@ import { useEffect, useState, type ReactNode } from "react";
 import { apiRoute } from "../../utils/api";
 import axios from "axios";
 import { useUser } from "../../context";
+import { useNavigate } from "react-router";
+import { axiosClient } from "../../api/axiosClient";
+
 
 export default function Protected({ children }: { children: ReactNode }) {
 
     const [isLoading, setIsLoading] = useState<boolean>(true)
     const { user, setUser, setContent } = useUser()
+    const navigate = useNavigate();
 
     useEffect(() => {
 
@@ -21,18 +25,36 @@ export default function Protected({ children }: { children: ReactNode }) {
         }
 
         const token = localStorage.getItem("token")
-        const response = async () => {
-            return await axios.get(apiRoute.content, {
-                headers: {
-                    Authorization: token
-                }
-            }).then((data) => {
-                setContent(data.data.content)
-                setIsLoading(false)
-            }
-            ).catch(e => console.log(e))
+        if (!token) {
+            navigate("/")
         }
-        response()
+
+
+        const fetchWithRetry = async (timeOutDuration: number = 5000) => {
+            const controller = new AbortController();
+            const timeOutRefernce = setTimeout(() => {
+                controller.abort();
+                fetchWithRetry(timeOutDuration)
+            }, timeOutDuration)
+
+            try {
+                const response = await axiosClient.get('/content', {
+                    signal: controller.signal
+                })
+
+                setIsLoading(false)
+                setContent(response.data.content)
+                clearTimeout(timeOutRefernce)
+            } catch (e) {
+                console.log(e)
+            }
+
+        }
+
+        fetchWithRetry()
+
+
+
     }, [])
     if (isLoading)
         return <div className="h-dvh w-dvw bg-amber-400"></div>

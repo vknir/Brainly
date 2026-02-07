@@ -13,9 +13,6 @@ export default function Dashboard() {
     const { user, content } = useUser()
 
     const handleShareClick = () => setDisplayShareModal(true)
-
-
-
     const handleCreateClick = () => setDisplayCreateModal(true)
 
     const { state, dispatch } = useContent()
