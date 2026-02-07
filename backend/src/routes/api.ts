@@ -119,6 +119,14 @@ apiRouter.get("/v1/content", authMiddleware, async (req, res) => {
     }
 })
 
+apiRouter.get("/v1/content/share", authMiddleware, async (req, res) => {
+    const result = await Links.findOne({ userId: req.userId });
+    if (result) {
+        return res.status(200).send({ status: result.share })
+    } else {
+        return res.status(200).send({ status: false })
+    }
+})
 
 apiRouter.post("/v1/content/share", authMiddleware, async (req, res) => {
     const { share } = req.body
