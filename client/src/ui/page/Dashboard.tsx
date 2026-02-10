@@ -29,7 +29,7 @@ export default function Dashboard() {
         <div className="border-b  bg-black w-full border-b-white  text-white py-6 items-center px-8 flex justify-between ">
             <h1>{user?.username}'s Collection</h1>
             <div className="flex gap-4">
-                <input type="text" className="bg-white rounded-md text-black px-4 outline-0 " placeholder="Search using AI" />
+                <input type="text" className="bg-white rounded-md text-black px-4 outline-0 " placeholder="Search using AI" ></input>
                 <Button showLoading={false} text="Search" variant="unselected"></Button>
             </div>
             <div className="flex gap-4" >

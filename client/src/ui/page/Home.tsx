@@ -36,6 +36,7 @@ export default function Home() {
             style: "mt-auto",
             handleButtonClick: () => {
                 localStorage.removeItem("token")
+                localStorage.removeItem("hash")
                 navigate("/")
             }
 
