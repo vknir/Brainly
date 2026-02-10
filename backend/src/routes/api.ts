@@ -5,7 +5,10 @@ import { JWT_SECRET } from "../config.js";
 import jwt, { type JwtPayload } from "jsonwebtoken"
 import bcrypt from "bcrypt"
 import { authMiddleware } from "../middleware/authMiddleware.js";
-import { generateHash } from "../utils.js";
+import { generateUnique8DigitCode } from "../utils.js";
+import { convertPosttoVector } from "../ai/index.js";
+
+
 
 
 const apiRouter: Router = Router();
@@ -88,6 +91,7 @@ apiRouter.post('/v1/content', authMiddleware, async (req, res) => {
     if (!latestContent)
         return res.status(500).send({ message: "Unable to add content" })
 
+    convertPosttoVector(title, description, link, type, latestContent._id )
     res.status(200).send({ message: "Content added succuessfully", content: latestContent })
 })
 
@@ -122,7 +126,11 @@ apiRouter.get("/v1/content", authMiddleware, async (req, res) => {
 apiRouter.get("/v1/content/share", authMiddleware, async (req, res) => {
     const result = await Links.findOne({ userId: req.userId });
     if (result) {
-        return res.status(200).send({ status: result.share })
+        if (result.share) {
+            res.status(200).send({ status: true, hash: result.hash })
+        } else {
+            res.status(200).send({ status: false })
+        }
     } else {
         return res.status(200).send({ status: false })
     }
@@ -138,7 +146,7 @@ apiRouter.post("/v1/content/share", authMiddleware, async (req, res) => {
 
             const currentUserLink = await Links.findOne({ userId: req.userId })
 
-            const hash = currentUserLink ? currentUserLink.hash : generateHash(req.username as string)
+            const hash = currentUserLink ? currentUserLink.hash : generateUnique8DigitCode()
             if (!currentUserLink) {
                 try {
                     await Links.create({ hash, userId: req.userId, share })
@@ -147,7 +155,7 @@ apiRouter.post("/v1/content/share", authMiddleware, async (req, res) => {
                     return res.status(500).send({ message: "Unable to update db" })
                 }
             }
-            return res.status(200).send({ message: "now you share your contents", link: hash })
+            return res.status(200).send({ message: "now you share your contents", hash })
         } else {
 
             const checkUpdate = await Links.findOneAndUpdate({ userId: req.userId }, { share })
