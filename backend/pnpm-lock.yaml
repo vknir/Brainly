@@ -8,6 +8,9 @@ importers:
 
   .:
     dependencies:
+      '@pinecone-database/pinecone':
+        specifier: ^7.0.0
+        version: 7.0.0
       '@types/bcrypt':
         specifier: ^6.0.0
         version: 6.0.0
@@ -38,6 +41,9 @@ importers:
       mongoose:
         specifier: ^9.0.1
         version: 9.0.1
+      youtube-transcript-plus:
+        specifier: ^1.1.2
+        version: 1.1.2
       zod:
         specifier: ^4.1.13
         version: 4.1.13
@@ -50,6 +56,10 @@ packages:
 
   '@mongodb-js/saslprep@1.4.0':
     resolution: {integrity: sha512-ZHzx7Z3rdlWL1mECydvpryWN/ETXJiCxdgQKTAH+djzIPe77HdnSizKBDi1TVDXZjXyOj2IqEG/vPw71ULF06w==}
+
+  '@pinecone-database/pinecone@7.0.0':
+    resolution: {integrity: sha512-/+SzpIJPXhrwv27CCz+sFw/r22Sjk9s+i8nFTryPiQAcwgWmWRWFqT1/LGkTdd9NRhuEA48yaCx/HgM6ugLNJA==}
+    engines: {node: '>=20.0.0'}
 
   '@types/bcrypt@6.0.0':
     resolution: {integrity: sha512-/oJGukuH3D2+D+3H4JWLaAsJ/ji86dhRidzZ/Od7H/i8g+aCmvkeCc6Ni/f9uxGLSQVCRZkX2/lqEFG2BvWtlQ==}
@@ -506,6 +516,10 @@ packages:
   wrappy@1.0.2:
     resolution: {integrity: sha512-l4Sp/DRseor9wL6EvV2+TuQn63dMkPjZ/sp9XkghTEbV9KlPS1xUsZ3u7/IQO4wxtcFB4bgpQPRcR3QCvezPcQ==}
 
+  youtube-transcript-plus@1.1.2:
+    resolution: {integrity: sha512-bLlqkA6gVVUorZpcc+THuECXyAwOpnHqW2lOav9g6gGovxAP3FCD8s9GBFVjmSl3cWWwwPPXtG/zY1nD+GvQ7A==}
+    engines: {node: '>=18.0.0'}
+
   zod@4.1.13:
     resolution: {integrity: sha512-AvvthqfqrAhNH9dnfmrfKzX5upOdjUVJYFqNSlkmGf64gRaTzlPwz99IHYnVs28qYAybvAlBV+H7pn0saFY4Ig==}
 
@@ -514,6 +528,8 @@ snapshots:
   '@mongodb-js/saslprep@1.4.0':
     dependencies:
       sparse-bitfield: 3.0.3
+
+  '@pinecone-database/pinecone@7.0.0': {}
 
   '@types/bcrypt@6.0.0':
     dependencies:
@@ -995,5 +1011,7 @@ snapshots:
       webidl-conversions: 7.0.0
 
   wrappy@1.0.2: {}
+
+  youtube-transcript-plus@1.1.2: {}
 
   zod@4.1.13: {}
