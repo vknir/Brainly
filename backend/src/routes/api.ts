@@ -6,7 +6,7 @@ import jwt, { type JwtPayload } from "jsonwebtoken"
 import bcrypt from "bcrypt"
 import { authMiddleware } from "../middleware/authMiddleware.js";
 import { generateUnique8DigitCode } from "../utils.js";
-import { convertPosttoVector } from "../ai/index.js";
+import { convertPosttoVector, searchQuerytoGetId } from "../ai/index.js";
 
 
 
@@ -181,6 +181,16 @@ apiRouter.get("/v1/content/:shareLink", authMiddleware, async (req, res) => {
     return res.status(200).send({ message: "Content retrieval successful", content })
 })
 
+apiRouter.post("/v1/query", authMiddleware, async (req, res)=>{
+    const {query} = req.body;
+
+    if(query){
+        const postIds = await searchQuerytoGetId(query)
+        return res.status(200).send({message:"Relevant posts", postIds: postIds})
+    }else{
+        return res.status(400).send({message:"No query"})
+    }
+})
 
 
 

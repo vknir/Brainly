@@ -1,20 +1,21 @@
 import type { Types } from "mongoose"
 import { fetchTranscript } from "youtube-transcript-plus"
 import { Pinecone } from "@pinecone-database/pinecone"
-import { PINECONE_KEY } from "../config.js"
+import { PINECONE_KEY, GOOGLE_API_KEY } from "../config.js"
+import { GoogleGenAI } from "@google/genai"
 
 
 type Post = "Youtube" | "Twitter"
 
 
 
-export async function convertPosttoVector(title: string, description: string, link: string, type: Post, _id: Types.ObjectId) {
+export async function convertPosttoVector(title: string, description: string, link: string, type: Post, _id: Types.ObjectId): Promise<void> {
 
     if (PINECONE_KEY) {
         const pc = new Pinecone({
             apiKey: PINECONE_KEY
         })
-        const indexName = 'shimmering-walnut'
+        const indexName = 'mediashare'
         const index = pc.index({ name: indexName });
 
         const namespace = index.namespace("__default__")
@@ -23,7 +24,8 @@ export async function convertPosttoVector(title: string, description: string, li
         try {
             switch (type) {
                 case "Youtube": {
-                    const summary = await youtubeToText(link)
+                    const summary = await youtubeToText(link).then(text => summarizeText(text))
+
                     const text = `Title ${title}
                               Description ${description}
                               Summary ${summary}`
@@ -51,9 +53,7 @@ export async function convertPosttoVector(title: string, description: string, li
                 }
             }
 
-            return () => {
-                pc.deleteIndex(indexName)
-            }
+           
         } catch (e) {
             console.log(e)
         }
@@ -66,14 +66,15 @@ export async function searchQuerytoGetId(query: string): Promise<string[] | unde
         const pc = new Pinecone({
             apiKey: PINECONE_KEY
         })
-        const indexName = 'shimmering-walnut'
+        const indexName = 'mediashare'
         const index = pc.index({ name: indexName });
-
+        const namespace = index.namespace("__default__")
 
         try {
-            const results = await index.searchRecords({
+
+            const results = await namespace.searchRecords({
                 query: {
-                    topK: 5,
+                    topK: 10,
                     inputs: { text: query }
                 }
             })
@@ -81,7 +82,7 @@ export async function searchQuerytoGetId(query: string): Promise<string[] | unde
             const postIds = results.result.hits.map(hit => hit._id)
 
 
-            pc.deleteIndex(indexName)
+           
             return postIds;
         } catch (e) {
             console.log(e)
@@ -90,7 +91,22 @@ export async function searchQuerytoGetId(query: string): Promise<string[] | unde
     }
 }
 
-async function youtubeToText(link: string): Promise<String> {
+async function summarizeText(text: string): Promise<string | undefined> {
+    if (GOOGLE_API_KEY) {
+        const ai = new GoogleGenAI({ apiKey: GOOGLE_API_KEY })
+
+        const summary = await ai.models.generateContent({
+            model: 'gemini-2.5-flash',
+            contents: `provide a concise summary of the following text: 
+                        ${text}`
+        })
+
+        if (summary)
+            return summary.text
+    }
+}
+
+async function youtubeToText(link: string): Promise<string> {
     const result = await fetchTranscript(link)
     const allText = result.map(item => item.text).join(" ")
 
