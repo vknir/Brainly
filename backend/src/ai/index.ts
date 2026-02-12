@@ -74,7 +74,7 @@ export async function searchQuerytoGetId(query: string): Promise<string[] | unde
 
             const results = await namespace.searchRecords({
                 query: {
-                    topK: 3,
+                    topK: 1,
                     inputs: { text: query }
                 }
             })

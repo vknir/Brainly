@@ -32,7 +32,8 @@ export default function Dashboard() {
         if (data.query) {
             try {
                 const response = await axiosClient.post('/query', { query: data.query })
-                setSharedPosts(response.data.postIds)
+
+                setSharedPosts(response.data.postIds.reverse())
 
             } catch (e) {
                 console.error(e)
@@ -85,25 +86,27 @@ export default function Dashboard() {
 
 
                     content.map((item) => {
+                        if (searchedPosts) {
+                            if (searchedPosts?.includes(item._id)) {
 
-                        if (searchedPosts?.includes(item._id)) {
-                            return <Card _id={item._id} key={item._id} title={item.title}
-                                description={item.description} link={item.link}
-                                type={item.type} />
-                        }
+                                return <Card _id={item._id} key={item._id} title={item.title}
+                                    description={item.description} link={item.link}
+                                    type={item.type} />
+                            }
+                        } else {
+                            if (state.displayContent === "All") {
 
-                        if (state.displayContent === "All") {
+                                return <Card _id={item._id} key={item._id} title={item.title}
+                                    description={item.description} link={item.link}
+                                    type={item.type} />
+                            }
 
-                            return <Card _id={item._id} key={item._id} title={item.title}
-                                description={item.description} link={item.link}
-                                type={item.type} />
-                        }
+                            else if (state.displayContent === item.type) {
 
-                        else if (state.displayContent === item.type) {
-
-                            return <Card _id={item._id} key={item._id} title={item.title}
-                                description={item.description} link={item.link}
-                                type={item.type} />
+                                return <Card _id={item._id} key={item._id} title={item.title}
+                                    description={item.description} link={item.link}
+                                    type={item.type} />
+                            }
                         }
                     }).reverse()
 
