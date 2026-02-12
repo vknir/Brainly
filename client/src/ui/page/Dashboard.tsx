@@ -17,7 +17,6 @@ export default function Dashboard() {
     const [displayCreateModal, setDisplayCreateModal] = useState<boolean>(false)
     const [searchedPosts, setSharedPosts] = useState<string[] | null>(null)
 
-    const setIds = new Set()
 
     const { user, content } = useUser()
 
@@ -34,9 +33,7 @@ export default function Dashboard() {
             try {
                 const response = await axiosClient.post('/query', { query: data.query })
                 setSharedPosts(response.data.postIds)
-                searchedPosts?.forEach(post => {
-                    setIds.add(post)
-                })
+
             } catch (e) {
                 console.error(e)
             }
@@ -85,25 +82,30 @@ export default function Dashboard() {
         <div className="overflow-clip h-dvh px-6 py-4 " >
             <div className="w-full h-screen py-2 bg-gray-300  grid overflow-auto  [&::-webkit-scrollbar]:w-0 grid-cols-4  ">
                 {
-                    searchedPosts ? content.filter(item => setIds.has(item._id)).map(item => {
-                        return <Card _id={item._id} key={item._id} title={item.title}
-                            description={item.description} link={item.link}
-                            type={item.type} />
-                    }) :
 
-                        content.map((item) => {
-                            if (state.displayContent === "All") {
-                                return <Card _id={item._id} key={item._id} title={item.title}
-                                    description={item.description} link={item.link}
-                                    type={item.type} />
-                            }
 
-                            else if (state.displayContent === item.type) {
-                                return <Card _id={item._id} key={item._id} title={item.title}
-                                    description={item.description} link={item.link}
-                                    type={item.type} />
-                            }
-                        }).reverse()
+                    content.map((item) => {
+
+                        if (searchedPosts?.includes(item._id)) {
+                            return <Card _id={item._id} key={item._id} title={item.title}
+                                description={item.description} link={item.link}
+                                type={item.type} />
+                        }
+
+                        if (state.displayContent === "All") {
+
+                            return <Card _id={item._id} key={item._id} title={item.title}
+                                description={item.description} link={item.link}
+                                type={item.type} />
+                        }
+
+                        else if (state.displayContent === item.type) {
+
+                            return <Card _id={item._id} key={item._id} title={item.title}
+                                description={item.description} link={item.link}
+                                type={item.type} />
+                        }
+                    }).reverse()
 
                 }
                 <div className="h-screen w-full"></div>
