@@ -6,7 +6,7 @@ import jwt, { type JwtPayload } from "jsonwebtoken"
 import bcrypt from "bcrypt"
 import { authMiddleware } from "../middleware/authMiddleware.js";
 import { generateUnique8DigitCode } from "../utils.js";
-import { convertPosttoVector, searchQuerytoGetId } from "../ai/index.js";
+import { convertPosttoVector, deleteContentVector, searchQuerytoGetId } from "../ai/index.js";
 
 
 
@@ -91,7 +91,7 @@ apiRouter.post('/v1/content', authMiddleware, async (req, res) => {
     if (!latestContent)
         return res.status(500).send({ message: "Unable to add content" })
 
-    convertPosttoVector(title, description, link, type, latestContent._id )
+    convertPosttoVector(title, description, link, type, latestContent._id)
     res.status(200).send({ message: "Content added succuessfully", content: latestContent })
 })
 
@@ -100,11 +100,14 @@ apiRouter.delete('/v1/content/:contentId', authMiddleware, async (req, res) => {
 
     const currentContent = await Content.find({ _id: contentId, userId: req.userId })
 
-    if (!currentContent || currentContent.length == 0)
+    if (!currentContent || currentContent.length == 0 || !contentId)
         return res.status(400).send({ message: "content id does not exist" })
 
     try {
         await Content.findByIdAndDelete(contentId)
+
+        await deleteContentVector(contentId)
+
         return res.status(200).send({ message: "Deletion successful" })
     } catch (e) {
         console.log(e)
@@ -154,12 +157,14 @@ apiRouter.post("/v1/content/share", authMiddleware, async (req, res) => {
                     console.log(e)
                     return res.status(500).send({ message: "Unable to update db" })
                 }
+            } else {
+                await Links.findOneAndUpdate({ userId: req.userId }, { share })
             }
             return res.status(200).send({ message: "now you share your contents", hash })
         } else {
 
             const checkUpdate = await Links.findOneAndUpdate({ userId: req.userId }, { share })
-            console.log(checkUpdate)
+
             return res.status(200).send({ message: "your contents are private" })
         }
     } catch (e) {
@@ -169,26 +174,27 @@ apiRouter.post("/v1/content/share", authMiddleware, async (req, res) => {
 })
 
 
-apiRouter.get("/v1/content/:shareLink", authMiddleware, async (req, res) => {
-    const hash = req.params.shareLink as string
+apiRouter.get("/v1/content/:hash", authMiddleware, async (req, res) => {
+    const hash = req.params.hash as string
     const currentUserLink = await Links.findOne({ hash })
     if (!currentUserLink || !currentUserLink.share)
         return res.status(400).send({ message: "Not authorized" })
 
     const content = await Content.find({ userId: currentUserLink.userId })
-    if (!content)
+    const user = await User.findById(currentUserLink.userId).select('username')
+    if (!content || !user)
         return res.status(500).send({ message: "Unable to get content" })
-    return res.status(200).send({ message: "Content retrieval successful", content })
+    return res.status(200).send({ message: "Content retrieval successful", content, username: user.username })
 })
 
-apiRouter.post("/v1/query", authMiddleware, async (req, res)=>{
-    const {query} = req.body;
+apiRouter.post("/v1/query", authMiddleware, async (req, res) => {
+    const { query } = req.body;
 
-    if(query){
+    if (query) {
         const postIds = await searchQuerytoGetId(query)
-        return res.status(200).send({message:"Relevant posts", postIds: postIds})
-    }else{
-        return res.status(400).send({message:"No query"})
+        return res.status(200).send({ message: "Relevant posts", postIds: postIds })
+    } else {
+        return res.status(400).send({ message: "No query" })
     }
 })
 

@@ -53,7 +53,7 @@ export async function convertPosttoVector(title: string, description: string, li
                 }
             }
 
-           
+
         } catch (e) {
             console.log(e)
         }
@@ -82,12 +82,29 @@ export async function searchQuerytoGetId(query: string): Promise<string[] | unde
             const postIds = results.result.hits.map(hit => hit._id)
 
 
-           
+
             return postIds;
         } catch (e) {
             console.log(e)
         }
 
+    }
+}
+
+export async function deleteContentVector(_id: string) {
+    if (PINECONE_KEY) {
+        const pc = new Pinecone({
+            apiKey: PINECONE_KEY
+        })
+        const indexName = 'mediashare'
+        const index = pc.index({ name: indexName });
+
+
+        try {
+            await index.deleteOne({ id: _id, namespace: '__default__' })
+        } catch (e) {
+            throw e
+        }
     }
 }
 

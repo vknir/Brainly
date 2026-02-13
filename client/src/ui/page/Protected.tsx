@@ -1,6 +1,4 @@
 import { useEffect, useState, type ReactNode } from "react";
-import { apiRoute } from "../../utils/api";
-import axios from "axios";
 import { useUser } from "../../context";
 import { useNavigate } from "react-router";
 import { axiosClient } from "../../api/axiosClient";
@@ -34,7 +32,7 @@ export default function Protected({ children }: { children: ReactNode }) {
             const controller = new AbortController();
             const timeOutRefernce = setTimeout(() => {
                 controller.abort();
-                fetchWithRetry(timeOutDuration)
+                fetchWithRetry()
             }, timeOutDuration)
 
             try {

@@ -11,7 +11,7 @@ export const ShareModal = ({ setIsVisible }:
         setIsVisible: React.Dispatch<SetStateAction<boolean>>
     }) => {
 
-    const textToCopy = window.location.href
+    const textToCopy = 'http://localhost:5173/share'
     const { isCopied, copy } = useCopyToClipBoard();
     const [loading, setLoading] = useState<boolean>(false)
     const [hash, setHash] = useState<string | null>(null)
@@ -22,7 +22,7 @@ export const ShareModal = ({ setIsVisible }:
 
     const onCopyClick = () => {
 
-        copy(`https://localhost:3000/content/${hash}`)
+        copy(`${textToCopy}/${hash}`)
     }
 
     const toggleLink = async (share: boolean) => {
@@ -90,7 +90,7 @@ export const ShareModal = ({ setIsVisible }:
                             hash &&
                             <>
                                 <div className="w-full py-2 border flex items-center justify-between animate-appear ">
-                                    {`http://localhost:3000/content/${hash}`}
+                                    {`${textToCopy}/${hash}`}
                                     <Button variant="none" className="border p-2"
                                         startIcon={isCopied ? <Tick className="size-4" /> : <Clipboard className="size-4" />}
                                         onClick={() => onCopyClick()}

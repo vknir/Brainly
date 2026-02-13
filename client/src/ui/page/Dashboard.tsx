@@ -7,12 +7,23 @@ import { CreateModal } from "../components/modals/createModal";
 import { Card } from "../components/card";
 import { useForm, type SubmitHandler } from "react-hook-form"
 import { axiosClient } from "../../api/axiosClient";
+import { useNavigate } from "react-router";
 
 type Inputs = {
     query: string
 }
 
-export default function Dashboard() {
+interface Content {
+    title: string,
+    description: string,
+    tags?: string[],
+    link: string,
+    type: "Youtube" | "Twitter",
+    _id: string,
+    userId: string
+}
+
+export default function Dashboard({ otherUser = false, otherUsername, otherUsersContent }: { otherUser: boolean, otherUsername?: string, otherUsersContent?: Content[] }) {
     const [displayShareModal, setDisplayShareModal] = useState<boolean>(false)
     const [displayCreateModal, setDisplayCreateModal] = useState<boolean>(false)
     const [searchedPosts, setSharedPosts] = useState<string[] | null>(null)
@@ -27,6 +38,7 @@ export default function Dashboard() {
     const { state, dispatch } = useContent()
 
     const { register, handleSubmit } = useForm<Inputs>()
+    const navigate = useNavigate()
 
     const onSubmit: SubmitHandler<Inputs> = async (data) => {
         if (data.query) {
@@ -42,28 +54,43 @@ export default function Dashboard() {
     }
 
     return <div className="w-full h-dvh overflow-clip  bg-black flex flex-col relative">
+
+
         {displayShareModal && <ShareModal setIsVisible={setDisplayShareModal} />}
 
 
         {displayCreateModal && <CreateModal setIsVisble={setDisplayCreateModal} />}
 
         <div className="border-b  bg-black w-full border-b-white  text-white py-6 items-center px-8 flex justify-between ">
-            <h1>{user?.username}'s Collection</h1>
+            {otherUsername ? <h1  > {otherUsername}'s Collection  </h1> : <h1> {user?.username}'s Collection  </h1>}
             <form onSubmit={handleSubmit(onSubmit)} className="flex gap-4">
-                <input {...register("query")} type="text" className="bg-white rounded-md text-black px-4 outline-0 " placeholder="Search using AI" ></input>
+                <input {...register("query")} type="text" className="bg-white rounded-md text-black px-4 outline-0 "
+                    placeholder="Search using AI" ></input>
                 <Button text="Search" variant="unselected"></Button>
             </form>
-            <div className="flex gap-4" >
-                <Button
-                    onClick={handleCreateClick}
-                    text="Create" variant="selected"
-                    startIcon={<Plus className="size-4" />}
-                />
-                <Button onClick={handleShareClick}
-                    text="Share" variant="unselected"
-                    startIcon={<Share className="size-4" />}
-                />
-            </div>
+            {
+                !otherUser ?
+                    <div className="flex gap-4" >
+                        <Button
+                            onClick={handleCreateClick}
+                            text="Create" variant="selected"
+                            startIcon={<Plus className="size-4" />}
+                        />
+                        <Button onClick={handleShareClick}
+                            text="Share" variant="unselected"
+                            startIcon={<Share className="size-4" />}
+                        />
+                    </div>
+                    :
+                    <div className="flex gap-4" >
+                        <Button
+                            onClick={() => { navigate("/home") }}
+                            text="Your Collection" variant="selected"
+
+                        />
+                    </div>
+
+            }
         </div>
         <div className="w-full px-6 pt-4">
             {
@@ -84,8 +111,7 @@ export default function Dashboard() {
             <div className="w-full h-screen py-2 bg-gray-300  grid overflow-auto  [&::-webkit-scrollbar]:w-0 grid-cols-4  ">
                 {
 
-
-                    content.map((item) => {
+                    otherUsersContent ? otherUsersContent.map((item) => {
                         if (searchedPosts) {
                             if (searchedPosts?.includes(item._id)) {
 
@@ -108,10 +134,35 @@ export default function Dashboard() {
                                     type={item.type} />
                             }
                         }
-                    }).reverse()
+                    }).reverse() :
+
+                        content.map((item) => {
+                            if (searchedPosts) {
+                                if (searchedPosts?.includes(item._id)) {
+
+                                    return <Card _id={item._id} key={item._id} title={item.title}
+                                        description={item.description} link={item.link}
+                                        type={item.type} />
+                                }
+                            } else {
+                                if (state.displayContent === "All") {
+
+                                    return <Card _id={item._id} key={item._id} title={item.title}
+                                        description={item.description} link={item.link}
+                                        type={item.type} />
+                                }
+
+                                else if (state.displayContent === item.type) {
+
+                                    return <Card _id={item._id} key={item._id} title={item.title}
+                                        description={item.description} link={item.link}
+                                        type={item.type} />
+                                }
+                            }
+                        }).reverse()
 
                 }
-                <div className="h-screen w-full"></div>
+                <div className="block h-screen w-full"></div>
             </div>
 
         </div>
