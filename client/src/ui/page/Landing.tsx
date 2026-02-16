@@ -1,40 +1,98 @@
-import Auth from "./Auth";
-import { Blob1, Blob2, Blob3, Blob4, Twitter, YouTube, Facebook, Folder, LinkedIn } from "../icons";
+
+import { Twitter, YouTube, Facebook, Folder, LinkedIn, Close, Logout, Bars3 } from "../icons";
+import { Share } from "../icons";
+import { Button } from "../components/button";
 import { Instagram } from "../icons/instagram";
+import { useState } from "react";
+import Slide from "./Slide";
 
 
 export default function Landing() {
+    const [slideVisible, setSlideVisible] = useState<boolean>(false)
+
+
     return <>
-        <div className="flex overflow-clip">
-            <div className="w-3/5 h-dvh bg-slate-800 relative text-white">
 
-                <Blob1 className="size-35  rotate-25 -left-15 -top-10 absolute" />
-                <Blob2 className="size-35 right-0 -top-10 absolute" />
-                <Blob3 className="size-35  absolute -bottom-5 " />
-                <Blob4 className="size-40 absolute  -bottom-20 right-0" />
-                <div className="flex flex-col gap-2 absolute left-16 bottom-1/2 translate-y-1/2">
-                    <h1 className="text-6xl font-semibold ">MediaShare</h1>
-                    <p className="text-2xl">Your Unified Content Hub</p>
+        <main className="w-dvw h-dvh overflow-hidden bg-black relative text-white [&::-webkit-scrollbar]:w-0 ">
 
-                    <ul className="mt-10 text-lg list-disc pl-5 flex flex-col gap-1 ">
-                        <li>Save & organize content.</li>
-                        <li>Share your collection easily.</li>
-                        <li>Supports X, Youtube, Github and more.</li>
-                        <li>Query your collection using AI to find your <br />saved content.</li>
-                    </ul>
+            <header className="w-full fixed bg-black/80 backdrop-blur-sm">
+                <div className="max-w-7xl mx-auto px-6 md:px-8">
+                    <div className="flex justify-between items-center h-16 sm:h-20 ">
+                        <a className="flex items-center gap-3" href="/">
+                            <Share className="size-8" />
+                            <span className="text-lg">Media Share</span>
+                        </a>
+
+                        <div>
+                            <Button className="md:hidden"
+                                onClick={() => setSlideVisible(prev => !prev)}
+                                variant="none"
+                                startIcon={<Bars3 className="size-8" />}
+                            />
+                        </div>
+
+
+                        <div className="hidden md:flex items-center space-x-3">
+                            <div>
+                                <Button variant="none" className="hover:bg-gray-900 p-2" text="Log In" />
+                            </div>
+                            <div>
+                                <Button variant="none" text="Get Started" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </header>
+            <Slide slideVisible={slideVisible} setSlideVisible={setSlideVisible} />
+            <section className="pt-28 ">
+                <div className=" max-w-7xl px-6 md:px-8">
+                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-14 items-start">
+                        <div className="text-center lg:text-left order-1 ">
+                            <h1 className="text-4xl font-bold mb-2">MediaShare</h1>
+                            <p className="text-2xl mb-6">Your Unified Content Hub</p>
+                            <p className="leading-relaxed mb-6 text">
+                                Organize your content from <span>X, YouTube , GitHub </span> and many more to make a
+                                library and <span> share </span> your curated collections with others.
+                            </p>
+                            <p className="leading-relaxed text mb-16">
+                                Query your collection via AI to get the information you need, ensuring your saved content is
+                                always at your fingertips.
+                            </p>
+
+                            <div>
+                                <Button variant="primary" text="Get Started" endIcon={<Logout className="size-4" />} />
+                            </div>
+                        </div>
+
+                        <div className=" hidden relative h-105  w-full order-2 border border-white  lg:flex items-center justify-center ">
+                            <YouTube className=" size-13 absolute -rotate-17 bottom-12/20 right-7/20" />
+                            <Twitter className="size-8 absolute rotate-15 bottom-10/20 right-11/20" />
+                            <Facebook className="size-10 absolute -rotate-20 bottom-9/20 right-7/20" />
+                            <Instagram className="size-7 absolute rotate-20 bottom-8/20 right-11/20" />
+                            <LinkedIn className="size-6 absolute -rotate-25 bottom-7/20 right-8/20 " />
+                            <Folder className="size-35 absolute bottom-0/20 left-1/2 -translate-x-1/2" />
+                        </div>
+                    </div>
                 </div>
 
-                <Twitter className="size-4 absolute bottom-7/24 -translate-y-35 rotate-30 right-57 " />
-                <YouTube className="size-8 absolute bottom-7/24 -translate-y-40 -rotate-30 right-65 " />
-                <Facebook className="size-10 absolute bottom-7/24 -translate-y-45 rotate-20 right-50 " />
-                <Instagram className="size-12 absolute bottom-7/24 -translate-y-55 -rotate-25 right-65 " />
-                <Folder className="size-35 absolute bottom-7/24 right-45 " />
-                <LinkedIn className="size-13 absolute  bottom-7/24 -translate-y-67 rotate-15 right-50" />
+            </section>
 
-            </div>
-            <div className="w-2/5 h-dvh absolute right-0">
-                <Auth />
-            </div>
-        </div>
+
+        </main>
+
     </>
+}
+
+{
+    /*<Blob1 className="size-35  rotate-25 -left-15 -top-10 absolute" />
+                <Blob2 className="size-35 right-0 -top-10 absolute" />
+                <Blob3 className="size-35  absolute -bottom-5 " />
+                <Blob4 className="size-40 absolute  -bottom-20 right-0" /> */
+}
+
+{/*  */ }
+
+
+{
+    /*  */
 }

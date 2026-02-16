@@ -23,3 +23,5 @@ export * from './folder'
 
 export * from './linkedin'
 export * from './loader'
+
+export * from './bars3'

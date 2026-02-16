@@ -4,7 +4,8 @@
 
     --animate-appear: appear .1s linear;
     --animate-slide: slide 2.1s linear;
-
+    --animate-slide-from-right: slide-from-right .5s ease;
+    --animate-slide-to-right: slide-to-right .5s ease;
 
     @keyframes appear {
         0% {
@@ -28,7 +29,7 @@
             right: 16px;
         }
 
-        50%{
+        50% {
             opacity: 1;
         }
 
@@ -40,6 +41,26 @@
         100% {
             opacity: 0;
             right: 0px
+        }
+    }
+
+    @keyframes slide-from-right {
+        0% {
+            right: -100%;
+        }
+
+        100% {
+            right: 0;
+        }
+    }
+
+    @keyframes slide-to-right {
+        0% {
+            right: 0;
+        }
+
+        100% {
+            right: -100%;
         }
     }
 }
