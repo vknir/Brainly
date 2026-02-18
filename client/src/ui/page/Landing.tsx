@@ -5,11 +5,12 @@ import { Button } from "../components/button";
 import { Instagram } from "../icons/instagram";
 import { useState } from "react";
 import Slide from "./Slide";
+import { useNavigate } from "react-router";
 
 
 export default function Landing() {
     const [slideVisible, setSlideVisible] = useState<boolean>(false)
-
+    const navigate = useNavigate()
 
     return <>
 
@@ -60,7 +61,7 @@ export default function Landing() {
                             </p>
 
                             <div>
-                                <Button variant="primary" text="Get Started" endIcon={<Logout className="size-4" />} />
+                                <Button onClick={()=>navigate("/signup")} variant="primary" text="Get Started" endIcon={<Logout className="size-4" />} />
                             </div>
                         </div>
 
@@ -83,16 +84,4 @@ export default function Landing() {
     </>
 }
 
-{
-    /*<Blob1 className="size-35  rotate-25 -left-15 -top-10 absolute" />
-                <Blob2 className="size-35 right-0 -top-10 absolute" />
-                <Blob3 className="size-35  absolute -bottom-5 " />
-                <Blob4 className="size-40 absolute  -bottom-20 right-0" /> */
-}
 
-{/*  */ }
-
-
-{
-    /*  */
-}

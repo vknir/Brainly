@@ -29,7 +29,7 @@ const Input = ({ className, inputName, type, register, watch, required, ...props
         setShowPassword(prev => !prev)
     }
 
-    const defaultStyle = "w-full  bg-white p-1 flex justify-between items-center rounded-md border-transparent "
+    const defaultStyle = "w-full  bg-white p-1 flex justify-between items-center rounded-md "
     const placeholder = `${inputName.charAt(0).toUpperCase()}${inputName.slice(1)}`
     return type === "password" ?
         <div className={`${defaultStyle} ${className}`}>
@@ -41,7 +41,7 @@ const Input = ({ className, inputName, type, register, watch, required, ...props
                     required: required,
                     validate: (val: string) => {
                         if (inputName === "password" && !passwordValidationRegex.test(val))
-                            return "Password must contain atleast one capital, one small, a digit, a special character and must be between 3-18 characters"
+                            return "Password must contain lowercase, uppercase, special character, digit and must be less than 18 characters"
                         if (watch != undefined && watch != val)
                             return "Passwords do not match"
                     }

@@ -6,7 +6,8 @@ import Home from './ui/page/Home'
 
 import Protected from './ui/page/Protected'
 import SharedDashboard from './ui/page/SharedDashboard'
-import Auth from './ui/page/Auth'
+import Login from './ui/page/Login'
+import Signup from './ui/page/Signup'
 
 
 
@@ -19,8 +20,8 @@ export default function App() {
             <ContentContexProvider>
                 <Routes>
                     <Route index element={<Landing />} />
-                    <Route path='login' element={}/>
-                    <Route path='signup' element={<Auth />} />
+                    <Route path='login' element={<Login/>}/>
+                    <Route path='signup' element={<Signup />} />
                     <Route path="home" element={<Protected> <Home /></Protected>} />
                     <Route path="share/:hash" element={<Protected><SharedDashboard /></Protected>} />
                 </Routes>

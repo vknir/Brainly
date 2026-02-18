@@ -22,5 +22,5 @@ export const Notification = (
 
 
 
-    return <p className="absolute z-50 bg-white py-2 px-4 rounded-md bottom-8 right-4 animate-slide ">{text}</p>
+    return <p className="absolute z-50 bg-white text-black py-2 px-4 rounded-md bottom-8 right-4 animate-slide ">{text}</p>
 }

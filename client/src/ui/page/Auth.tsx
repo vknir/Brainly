@@ -51,9 +51,9 @@ export default function Auth() {
     const onSubmit: SubmitHandler<IFormValues> = async (data) => {
 
         const { username, password } = data
-
+        
         const passwordValidationRegex = /^(?=.*[a-z])(?=.*[0-9])(?=.*[A-Z])(?=.*[!@#$%^&*()?{}~]).{8,18}$/
-        console.log(passwordValidationRegex.test(data.password))
+        
 
 
         try {

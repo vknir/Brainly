@@ -13,7 +13,7 @@ export default function Slide({ slideVisible, setSlideVisible }: { slideVisible:
             />
 
             <div className="flex flex-col w-full gap-4 p-4 items-center">
-                <a href="/auth" className="font-medium text-gray-200" >Login</a>
+                <a href="/login" className="font-medium text-gray-200" >Login</a>
                 <div className="w-full relative overflow-clip rounded-[10px ] p-0.5">
 
                     <Button className="relative h-full text-lg font-medium bg-white text-black w-full p-2 rounded-lg"
