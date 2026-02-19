@@ -1,5 +1,5 @@
 
-import { Twitter, YouTube, Facebook, Folder, LinkedIn, Close, Logout, Bars3 } from "../icons";
+import { Twitter, YouTube, Facebook, Folder, LinkedIn, Logout, Bars3 } from "../icons";
 import { Share } from "../icons";
 import { Button } from "../components/button";
 import { Instagram } from "../icons/instagram";

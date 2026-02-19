@@ -49,7 +49,7 @@ const Sidebar = ({ itemList, logo, brandName }: SidebarProps) => {
 
 
     return <div onMouseEnter={mouseEventHandler} onMouseLeave={mouseEventHandler}
-        className={`h-dvh group sticky transition-all duration-150 ease-in p-4 flex flex-col gap-4 ${open ? 'w-1/6' : 'w-20'} `}>
+        className={`h-dvh group hidden md:flex sticky transition-all duration-150 ease-in p-4  flex-col gap-4 ${open ? 'w-1/6' : 'w-20'} `}>
         <div className="flex items-center gap-4 ">
             {logo}
             {visible && <p className="text-2xl animate-appear leading-none  ">{brandName}</p>}

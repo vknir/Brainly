@@ -2,12 +2,13 @@ import { useState } from "react";
 import { Button } from "../components/button";
 import { useContent, useUser } from "../../context"
 import { ShareModal } from "../components/modals/shareModal";
-import { Close, Plus, Share } from "../icons";
+import { Bars3, Close, Plus, Share } from "../icons";
 import { CreateModal } from "../components/modals/createModal";
 import { Card } from "../components/card";
 import { useForm, type SubmitHandler } from "react-hook-form"
 import { axiosClient } from "../../api/axiosClient";
 import { useNavigate } from "react-router";
+import Menu from "../components/menu";
 
 type Inputs = {
     query: string
@@ -26,6 +27,8 @@ interface Content {
 export default function Dashboard({ otherUser = false, otherUsername, otherUsersContent }: { otherUser: boolean, otherUsername?: string, otherUsersContent?: Content[] }) {
     const [displayShareModal, setDisplayShareModal] = useState<boolean>(false)
     const [displayCreateModal, setDisplayCreateModal] = useState<boolean>(false)
+    const [display]
+
     const [searchedPosts, setSharedPosts] = useState<string[] | null>(null)
 
 
@@ -60,23 +63,44 @@ export default function Dashboard({ otherUser = false, otherUsername, otherUsers
 
 
         {displayCreateModal && <CreateModal setIsVisble={setDisplayCreateModal} />}
+        <Menu/>
+        <div className="w-full h-fit flex justify-between items-center   py-4 px-8 md:hidden text-white">
+            {
+                otherUsername ?
+                    <h1 className="text-base inline md:hidden"  > {otherUsername}'s Collection  </h1>
+                    :
+                    <h1 className="text-base inline md:hidden"> {user?.username}'s Collection  </h1>
+            }
+            <div>
+                <Button variant="none" startIcon={<Bars3 className="size-6" />} />
+            </div>
+        </div>
+        <div className="border-b rounded-t-xl border-t bg-black w-full border-b-white  text-white py-6 items-center px-8 flex justify-between ">
 
-        <div className="border-b  bg-black w-full border-b-white  text-white py-6 items-center px-8 flex justify-between ">
-            {otherUsername ? <h1  > {otherUsername}'s Collection  </h1> : <h1> {user?.username}'s Collection  </h1>}
-            <form onSubmit={handleSubmit(onSubmit)} className="flex gap-4">
-                <input {...register("query")} type="text" className="bg-white rounded-md text-black px-4 outline-0 "
-                    placeholder="Search using AI" ></input>
-                <Button text="Search" variant="unselected"></Button>
+
+            {
+                otherUsername ?
+                    <h1 className="text-base hidden md:inline"  > {otherUsername}'s Collection  </h1>
+                    :
+                    <h1 className="text-base hidden md:inline"> {user?.username}'s Collection  </h1>
+            }
+
+            <form onSubmit={handleSubmit(onSubmit)} className="flex gap-2 md:gap-4">
+                <input {...register("query")} type="text" className="bg-white w-26 text-xs md:text-base rounded-md text-black px-4 outline-0 "
+                    placeholder="AI Search " ></input>
+                <Button className="text-xs md:text-base bg-white text-slate-800 p-2 rounded-md" text="Search" variant="unselected"></Button>
             </form>
             {
                 !otherUser ?
                     <div className="flex gap-4" >
                         <Button
+                            className="text-[0px] md:text-base flex items-center justify-center gap-2 text-white bg-slate-800 py-2 px-2 md:p-2 rounded-md border border-transparent hover:cursor-pointer hover:border-black transform-border duration-100 ease-in"
                             onClick={handleCreateClick}
                             text="Create" variant="selected"
                             startIcon={<Plus className="size-4" />}
                         />
                         <Button onClick={handleShareClick}
+                            className="text-[0px] md:text-base flex items-center justify-center gap-2 text-black bg-white py-2 px-2 md:p-2 rounded-md border border-transparent hover:cursor-pointer hover:border-black transform-border duration-100 ease-in"
                             text="Share" variant="unselected"
                             startIcon={<Share className="size-4" />}
                         />
