@@ -65,7 +65,7 @@ export default function Dashboard({ otherUser = false, otherUsername, otherUsers
         {displayCreateModal && <CreateModal setIsVisble={setDisplayCreateModal} />}
         
         { displayMenu && <Menu setDisplayMenu ={setDisplayMenu} /> }
-        <div className="w-full h-fit flex justify-between items-center   py-4 px-8 md:hidden text-white">
+        <div className="w-full h-fit flex justify-between items-center   py-4 px-4 md:hidden text-white">
             {
                 otherUsername ?
                     <h1 className="text-base inline md:hidden"  > {otherUsername}'s Collection  </h1>
@@ -76,7 +76,7 @@ export default function Dashboard({ otherUser = false, otherUsername, otherUsers
                 <Button onClick={()=>setDisplayMenu(true)} variant="none" startIcon={<Bars3 className="size-6" />} />
             </div>
         </div>
-        <div className="border-b rounded-t-xl border-t bg-black w-full border-b-white  text-white py-6 items-center px-8 flex justify-between ">
+        <div className="border-b rounded-t-xl border-t md:border-t-0 bg-black w-full border-b-white  text-white py-6 items-center px-8 flex justify-between ">
 
 
             {
@@ -87,7 +87,7 @@ export default function Dashboard({ otherUser = false, otherUsername, otherUsers
             }
 
             <form onSubmit={handleSubmit(onSubmit)} className="flex gap-2 md:gap-4">
-                <input {...register("query")} type="text" className="bg-white w-26 text-xs md:text-base rounded-md text-black px-4 outline-0 "
+                <input {...register("query")} type="text" className="bg-white w-30 md:w-full text-xs md:text-base rounded-md text-black px-4 outline-0 "
                     placeholder="AI Search " ></input>
                 <Button className="text-xs md:text-base bg-white text-slate-800 p-2 rounded-md" text="Search" variant="unselected"></Button>
             </form>
@@ -132,8 +132,8 @@ export default function Dashboard({ otherUser = false, otherUsername, otherUsers
                     <div className="w-full h-10"></div>
             }
         </div>
-        <div className="overflow-clip h-dvh px-6 py-4 " >
-            <div className="w-full h-screen py-2 bg-gray-300  grid overflow-auto  [&::-webkit-scrollbar]:w-0 grid-cols-4  ">
+        <div className="overflow-clip h-dvh py-4" >
+            <div className="w-full h-screen  grid overflow-auto  [&::-webkit-scrollbar]:w-0 grid-cols-1 justify-items-center gap-2 md:grid-cols-2 lg:grid-cols-4  ">
                 {
 
                     otherUsersContent ? otherUsersContent.map((item) => {
