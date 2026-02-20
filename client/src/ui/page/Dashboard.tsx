@@ -27,7 +27,7 @@ interface Content {
 export default function Dashboard({ otherUser = false, otherUsername, otherUsersContent }: { otherUser: boolean, otherUsername?: string, otherUsersContent?: Content[] }) {
     const [displayShareModal, setDisplayShareModal] = useState<boolean>(false)
     const [displayCreateModal, setDisplayCreateModal] = useState<boolean>(false)
-    const [display]
+    const [displayMenu , setDisplayMenu] = useState<boolean>(false)
 
     const [searchedPosts, setSharedPosts] = useState<string[] | null>(null)
 
@@ -63,7 +63,8 @@ export default function Dashboard({ otherUser = false, otherUsername, otherUsers
 
 
         {displayCreateModal && <CreateModal setIsVisble={setDisplayCreateModal} />}
-        <Menu/>
+        
+        { displayMenu && <Menu setDisplayMenu ={setDisplayMenu} /> }
         <div className="w-full h-fit flex justify-between items-center   py-4 px-8 md:hidden text-white">
             {
                 otherUsername ?
@@ -72,7 +73,7 @@ export default function Dashboard({ otherUser = false, otherUsername, otherUsers
                     <h1 className="text-base inline md:hidden"> {user?.username}'s Collection  </h1>
             }
             <div>
-                <Button variant="none" startIcon={<Bars3 className="size-6" />} />
+                <Button onClick={()=>setDisplayMenu(true)} variant="none" startIcon={<Bars3 className="size-6" />} />
             </div>
         </div>
         <div className="border-b rounded-t-xl border-t bg-black w-full border-b-white  text-white py-6 items-center px-8 flex justify-between ">
