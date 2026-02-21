@@ -17,7 +17,7 @@ export default function Landing() {
         <main className="w-dvw h-dvh overflow-hidden bg-black relative text-white [&::-webkit-scrollbar]:w-0 ">
 
             <header className="w-full fixed bg-black/80 backdrop-blur-sm">
-                <div className="max-w-7xl mx-auto px-6 md:px-8">
+                <div className="max-w-7xl mx-auto py-4 px-6 md:px-8">
                     <div className="flex justify-between items-center h-16 sm:h-20 ">
                         <a className="flex items-center gap-3" href="/">
                             <Share className="size-8" />
@@ -33,23 +33,31 @@ export default function Landing() {
                         </div>
 
 
-                        <div className="hidden md:flex items-center space-x-3">
+                        <div className="hidden md:flex items-center text-black space-x-6">
                             <div>
-                                <Button variant="none" className="hover:bg-gray-900 p-2" text="Log In" />
+                                <Button
+                                    onClick={() => navigate("/login")}
+                                    variant="none"
+                                    className="text-white hover:cursor-pointer transform duration-150 ease-in hover:bg-gray-900 px-4 py-2 rounded-md"
+                                    text="Log In" />
                             </div>
                             <div>
-                                <Button variant="none" text="Get Started" />
+                                <Button
+                                    onClick={() => navigate("/signup")}
+                                    variant="none"
+                                    className="bg-white font-normal px-4 py-2 rounded-md hover:scale-110 transform duration-150 ease-in hover:shadow-white/50 hover:shadow-md hover:cursor-pointer"
+                                    text="Get Started" />
                             </div>
                         </div>
                     </div>
                 </div>
             </header>
             <Slide slideVisible={slideVisible} setSlideVisible={setSlideVisible} />
-            <section className="pt-28 ">
-                <div className=" max-w-7xl px-6 md:px-8">
-                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-14 items-start">
-                        <div className="text-center lg:text-left order-1 ">
-                            <h1 className="text-4xl font-bold mb-2">MediaShare</h1>
+            <section className="pt-28 h-full">
+                <div className=" max-w-7xl h-full mx-auto px-6 md:px-8">
+                    <div className="grid grid-cols-1 h-full md:grid-cols-2 justify-items-center items-center justify-center   ">
+                        <div className="text-center h-full  flex flex-col justify-center  lg:text-left order-1 ">
+                            <h1 className=" text-4xl md:text-5xl font-bold mb-2">MediaShare</h1>
                             <p className="text-2xl mb-6">Your Unified Content Hub</p>
                             <p className="leading-relaxed mb-6 text">
                                 Organize your content from <span>X, YouTube , GitHub </span> and many more to make a
@@ -61,17 +69,17 @@ export default function Landing() {
                             </p>
 
                             <div>
-                                <Button onClick={()=>navigate("/signup")} variant="primary" text="Get Started" endIcon={<Logout className="size-4" />} />
+                                <Button onClick={() => navigate("/signup")} variant="primary" text="Get Started" endIcon={<Logout className="size-4" />} />
                             </div>
                         </div>
 
-                        <div className=" hidden relative h-105  w-full order-2 border border-white  lg:flex items-center justify-center ">
-                            <YouTube className=" size-13 absolute -rotate-17 bottom-12/20 right-7/20" />
-                            <Twitter className="size-8 absolute rotate-15 bottom-10/20 right-11/20" />
-                            <Facebook className="size-10 absolute -rotate-20 bottom-9/20 right-7/20" />
-                            <Instagram className="size-7 absolute rotate-20 bottom-8/20 right-11/20" />
-                            <LinkedIn className="size-6 absolute -rotate-25 bottom-7/20 right-8/20 " />
-                            <Folder className="size-35 absolute bottom-0/20 left-1/2 -translate-x-1/2" />
+                        <div className=" hidden relative h-full  w-full order-2  md:flex items-center justify-center ">
+                            <YouTube className=" size-18 absolute right-44 bottom-104 rotate-10" />
+                            <Twitter className="size-12 absolute right-77 bottom-96 -rotate-14" />
+                            <Facebook className="size-17 absolute right-50 bottom-88 rotate-14" />
+                            <Instagram className="size-12 absolute right-72 bottom-77 -rotate-16" />
+                            <LinkedIn className="size-9 absolute  right-58 bottom-70 rotate-18" />
+                            <Folder className="size-42 absolute right-50 bottom-34" />
                         </div>
                     </div>
                 </div>
