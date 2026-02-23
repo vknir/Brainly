@@ -54,7 +54,7 @@ export default function Login() {
 
     return <div className="bg-black text-white relative overflow-clip h-dvh w-dvw">
         <div className="p-2 h-full w-full gap-5 flex flex-col justify-center items-center ">
-            <div className="flex justify-center gap-1 mb-5 ">
+            <div className="flex justify-center gap-2 mb-5 ">
                 <Share className="size-8" />
                 <p className="text-xl font-medium">MediaShare</p>
             </div>

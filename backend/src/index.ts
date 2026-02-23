@@ -6,7 +6,7 @@ import cors from 'cors'
 
 const app = express();
 
-app.listen(PORT)
+app.listen(PORT || process.env.PORT)
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 app.use(cors())
